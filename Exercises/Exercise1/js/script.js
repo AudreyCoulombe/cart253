@@ -15,7 +15,9 @@ let squareX;
 let squareY;
 let squareSize = 100;
 
-
+//The current position of the elllipse I added
+let ellipseX= 0;
+let ellipseY= 320;
 // preload()
 //
 // Nothing here
@@ -47,6 +49,7 @@ function setup() {
   rectMode(CENTER);
   // We won't have a stroke in this
   noStroke();
+
 }
 
 
@@ -57,6 +60,13 @@ function setup() {
 
 function draw() {
   // We don't fill the background so we get a drawing effect
+
+//Move the ellipse I added horizontally
+ellipseX +=1;
+// Apply a color to the circle I added
+fill(0,200,200);
+//Display the ellipse I added
+ellipse(ellipseX,ellipseY,40,40)
 
   // Move circle up and to the right
   circleX += 1;
