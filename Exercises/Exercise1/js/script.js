@@ -66,7 +66,11 @@ ellipseX +=1;
 // Apply a color to the circle I added
 fill(0,200,200);
 //Display the ellipse I added
-ellipse(ellipseX,ellipseY,40,40)
+ellipse(ellipseX,ellipseY,40,40);
+
+//Adding a square that follows the mouse
+fill(255,255,0);
+rect(mouseX,mouseY,30,30);
 
   // Move circle up and to the right
   circleX += 1;
