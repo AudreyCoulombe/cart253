@@ -18,12 +18,21 @@ let squareSize = 100;
 //The current position of the elllipse I added
 let ellipseX= 0;
 let ellipseY= 320;
+
+//declaring the variable for my mario image
+let img;
+//horizontal position of my mario image
+let imgX=320;
+//vertical position of my mario image
+let imgY=640;
+
 // preload()
 //
 // Nothing here
 
 function preload() {
-
+  //preload mario image to avoid delay
+img =loadImage ("assets/images/mario_PNG55.png");
 }
 
 
@@ -87,4 +96,10 @@ rect(mouseX,mouseY,30,30);
   fill(0,0,255,10);
   // Display the square
   rect(squareX,squareY,squareSize,squareSize);
+
+  //Move my mario image from bottom to top
+  imgY -= 1;
+  //Display my mario image
+image(img,imgX,imgY,50,50);
+
 }
