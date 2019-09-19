@@ -29,6 +29,12 @@ let enemyVX = 5;
 // How many dodges the player has made
 let dodges = 0;
 
+//naming my font variable
+let myFont;
+
+function preload(){
+  myFont=loadFont("assets/Font/dotFont.otf");
+}
 // setup()
 //
 // Make the canvas, position the avatar and anemy
@@ -129,6 +135,14 @@ function draw() {
 
   // Display the number of successful dodges in the console
   console.log(dodges);
+
+// Display the number of successful dodges in the canvas
+fill(0, 102, 153);
+textSize(32);
+textFont("dotFont");
+text('Dodges:', width-170,40);
+text(dodges,width-50,40);
+
 
   // The player is black
   fill(0);
