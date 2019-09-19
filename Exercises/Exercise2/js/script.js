@@ -20,11 +20,19 @@ let avatarVY = 0;
 // The position and size of the enemy circle
 let enemyX;
 let enemyY;
-let enemySize = 50;
 
-// The speed and velocity of our enemy circle
-let enemySpeed = 5;
+//initial Ennemy Size
+let initialEnemySize = 50;
+let enemySize = initialEnemySize;
+//enemy size increasment
+let enemySizeInc = 15;
+
+// The initial speed and velocity of our enemy circle
+let initialEnemySpeed = 5;
 let enemyVX = 5;
+let enemySpeed = initialEnemySpeed;
+//The speed increasement of enemy
+let enemySpeedInc = 2;
 
 // How many dodges the player has made
 let dodges = 0;
@@ -32,6 +40,9 @@ let dodges = 0;
 //naming my font variable
 let myFont;
 
+
+
+//Loading my font
 function preload(){
   myFont=loadFont("assets/Font/dotFont.otf");
 }
@@ -49,7 +60,6 @@ function setup() {
   // Put the enemy to the left at a random y coordinate within the canvas
   enemyX = 0;
   enemyY = random(0,height);
-
   // No stroke so it looks cleaner
   noStroke();
 }
@@ -98,6 +108,7 @@ function draw() {
   // Check if the enemy and avatar overlap - if they do the player loses
   // We do this by checking if the distance between the centre of the enemy
   // and the centre of the avatar is less that their combined radii
+
   if (dist(enemyX,enemyY,avatarX,avatarY) < enemySize/2 + avatarSize/2) {
     // Tell the player they lost
     console.log("YOU LOSE!");
@@ -109,6 +120,9 @@ function draw() {
     avatarY = height/2;
     // Reset the dodge counter
     dodges = 0;
+    //Reset enemy size to initial enemy size and speed
+    enemySize = initialEnemySize;
+    enemySpeed = initialEnemySpeed;
   }
 
   // Check if the avatar has gone off the screen (cheating!)
@@ -119,7 +133,10 @@ function draw() {
     enemyY = random(0,height);
     avatarX = width/2;
     avatarY = height/2;
-    dodges = 0;
+    dodges = 0
+    //Reset enemy size to initial enemy size and speed
+    enemySize = initialEnemySize;
+    enemySpeed = initialEnemySpeed;
   }
 
   // Check if the enemy has moved all the way across the screen
@@ -131,6 +148,10 @@ function draw() {
     // Reset the enemy's position to the left at a random height
     enemyX = 0;
     enemyY = random(0,height);
+    //increase enemy size and speed
+    enemySize += enemySizeInc;
+    enemySpeed += enemySpeedInc;
+
   }
 
   // Display the number of successful dodges in the console
