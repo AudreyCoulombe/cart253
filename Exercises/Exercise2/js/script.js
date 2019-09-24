@@ -40,11 +40,19 @@ let dodges = 0;
 //naming my font variable
 let myFont;
 
+//Naming my ennemy and background images
+let imgEnnemy;
+let bg;
+
 
 
 //Loading my font
 function preload(){
-  myFont=loadFont("assets/Font/dotFont.otf");
+  //preload ennemy and background images to avoid delay
+  imgEnnemy = loadImage ("assets/images/rocket.png");
+  bg = loadImage ("assets/images/sky.jpg");
+  myFont = loadFont("assets/Font/dotFont.otf");
+
 }
 // setup()
 //
@@ -70,7 +78,8 @@ function setup() {
 // game over situations.
 function draw() {
   // A pink background
-  background(255,220,220);
+  imageMode(CORNER);
+  background(bg);
 
   // Default the avatar's velocity to 0 in case no key is pressed this frame
   avatarVX = 0;
@@ -159,6 +168,7 @@ function draw() {
 
 // Display the number of successful dodges in the canvas
 fill(0, 102, 153);
+noStroke()
 textSize(32);
 textFont("dotFont");
 text('Dodges:', width-170,40);
@@ -166,13 +176,19 @@ text(dodges,width-50,40);
 
 
   // The player is black
-  fill(0);
+  //fill(0);
   // Draw the player as a circle
+  fill(255,255,0);
+  strokeWeight(10);
+  stroke(0,0,255);
   ellipse(avatarX,avatarY,avatarSize,avatarSize);
 
   // The enemy is red
-  fill(255,0,0);
+  //fill(255,0,0);
   // Draw the enemy as a circle
-  ellipse(enemyX,enemyY,enemySize,enemySize);
+  //ellipse(enemyX,enemyY,enemySize,enemySize);
+  //draw the ennemy as a rocket image
+  imageMode(CENTER);
+  image (imgEnnemy,enemyX,enemyY,enemySize,enemySize);
 
 }
