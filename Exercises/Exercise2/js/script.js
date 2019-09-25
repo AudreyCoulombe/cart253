@@ -41,16 +41,18 @@ let dodges = 0;
 let myFont;
 
 //Naming my ennemy and background images
-let imgEnnemy;
-let bg;
-
-
+let R;
+let skyBg;
+let spaceskyBg;
+let moonskyBg;
 
 //Loading my font
 function preload(){
   //preload ennemy and background images to avoid delay
-  imgEnnemy = loadImage ("assets/images/rocket.png");
-  bg = loadImage ("assets/images/sky.jpg");
+  rocketImgEnnemy = loadImage ("assets/images/rocket.png");
+  skyBg = loadImage ("assets/images/sky.jpg");
+  spaceskyBg =loadImage ("assets/images/space.jpeg");
+  moonskyBg =loadImage ("assets/images/moon.jpg");
   myFont = loadFont("assets/Font/dotFont.otf");
 
 }
@@ -77,16 +79,26 @@ function setup() {
 // Handle moving the avatar and enemy and checking for dodges and
 // game over situations.
 function draw() {
-  // A pink background
-  imageMode(CORNER);
-  background(bg);
 
+
+  //background images
+  imageMode(CORNER);
+  background(skyBg);
+
+  //Change backgroud image depending on number of dodges
+  if (dodges >= 3) {
+    background(spaceskyBg);
+    }
+  if (dodges>= 6) {
+    background(moonskyBg);
+    }
   // Default the avatar's velocity to 0 in case no key is pressed this frame
   avatarVX = 0;
   avatarVY = 0;
 
   // Check which keys are down and set the avatar's velocity based on its
   // speed appropriately
+
 
   // Left and right
   if (keyIsDown(LEFT_ARROW)) {
@@ -160,8 +172,9 @@ function draw() {
     //increase enemy size and speed
     enemySize += enemySizeInc;
     enemySpeed += enemySpeedInc;
-
   }
+
+
 
   // Display the number of successful dodges in the console
   console.log(dodges);
@@ -173,7 +186,6 @@ textSize(32);
 textFont("dotFont");
 text('Dodges:', width-170,40);
 text(dodges,width-50,40);
-
 
   // The player is black
   //fill(0);
@@ -189,6 +201,5 @@ text(dodges,width-50,40);
   //ellipse(enemyX,enemyY,enemySize,enemySize);
   //draw the ennemy as a rocket image
   imageMode(CENTER);
-  image (imgEnnemy,enemyX,enemyY,enemySize,enemySize);
-
+  image (rocketImgEnnemy,enemyX,enemyY,enemySize,enemySize);
 }
