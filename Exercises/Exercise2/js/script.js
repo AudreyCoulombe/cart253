@@ -41,7 +41,7 @@ let dodges = 0;
 let myFont;
 
 //Naming my ennemy and background images
-let R;
+let rocketImgEnnemy;
 let skyBg;
 let spaceskyBg;
 let moonskyBg;
