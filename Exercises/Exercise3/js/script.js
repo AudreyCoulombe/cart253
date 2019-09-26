@@ -12,6 +12,8 @@ Animal images from:
 https://creativenerds.co.uk/freebies/80-free-wildlife-icons-the-best-ever-animal-icon-set/
 ******************************************************************************/
 
+let WhereAmI="Where am I?"
+
 // Position and image of the sausage dog we're searching for
 let targetX;
 let targetY;
@@ -120,6 +122,11 @@ function setup() {
   rect(width - targetImage.width/2, targetImage.height/2, targetImage.width, targetImage.height);
   //display the reference image
   image (targetImage, width - targetImage.width/2, targetImage.height/2);
+  //display text over reference image
+  fill(255);
+  textSize(20);
+  textAlign(CENTER,BOTTOM);
+  text(WhereAmI,width - targetImage.width/2,25);
 }
 
 
