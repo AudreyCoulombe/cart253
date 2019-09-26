@@ -59,6 +59,7 @@ function preload() {
 // Creates the canvas, sets basic modes, draws correct number
 // of decoys in random positions, then the target
 function setup() {
+
   createCanvas(windowWidth,windowHeight);
   background("#ffff00");
   imageMode(CENTER);
@@ -112,6 +113,13 @@ function setup() {
 
   // And draw it (because it's the last thing drawn, it will always be on top)
   image(targetImage,targetX,targetY);
+
+  //display rectangle behind the reference image
+  rectMode(CENTER);
+  fill(255,0,0);
+  rect(width - targetImage.width/2, targetImage.height/2, targetImage.width, targetImage.height);
+  //display the reference image
+  image (targetImage, width - targetImage.width/2, targetImage.height/2);
 }
 
 
