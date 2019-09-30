@@ -19,6 +19,14 @@ let targetX;
 let targetY;
 let targetImage;
 
+//image, position, velocity and speed of the sausage dog (once we've won)
+let winImg;
+let winImgX;
+let winImgY;
+let winImgVX;
+let winImgVY;
+let winImgSpeedChange=1;
+
 // The ten decoy images
 let decoyImage1;
 let decoyImage2;
@@ -40,9 +48,10 @@ let gameOver = false;
 
 // preload()
 //
-// Loads the target and decoy images before the program starts
+// Loads the target, decoy and winning images before the program starts
 function preload() {
   targetImage = loadImage("assets/images/animals-target.png");
+  winImg = loadImage("assets/images/animals-target.png");
 
   decoyImage1 = loadImage("assets/images/animals-01.png");
   decoyImage2 = loadImage("assets/images/animals-02.png");
@@ -127,6 +136,12 @@ function setup() {
   textSize(20);
   textAlign(CENTER,BOTTOM);
   text(WhereAmI,width - targetImage.width/2,25);
+
+//preparing the winning image to be displayed over the target when you win
+  winImgX= targetX;
+  winImgY = targetY;
+  winImgVX=0;
+  winImgVY=0;
 }
 
 
@@ -135,13 +150,24 @@ function setup() {
 // Displays the game over screen if the player has won,
 // otherwise nothing (all the gameplay stuff is in mousePressed())
 function draw() {
+
+
   if (gameOver) {
+    //move the winning image randomly when you win
+    winImgVX += random(-winImgSpeedChange,winImgSpeedChange);
+    winImgVY += random(-winImgSpeedChange,winImgSpeedChange);
+    winImgX += winImgVX;
+    winImgY += winImgVY;
+    image(winImg,winImgX,winImgY);
     // Prepare our typography
     textFont("Helvetica");
     textSize(128);
     textAlign(CENTER,CENTER);
     noStroke();
     fill(random(255));
+
+
+
 
     // Tell them they won!
     text("YOU WINNED!",width/2,height/2);
@@ -152,6 +178,9 @@ function draw() {
     stroke(random(255));
     strokeWeight(10);
     ellipse(targetX,targetY,targetImage.width,targetImage.height);
+
+
+
   }
 }
 
