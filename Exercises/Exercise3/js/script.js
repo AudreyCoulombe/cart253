@@ -165,13 +165,8 @@ function draw() {
     textAlign(CENTER,CENTER);
     noStroke();
     fill(random(255));
-
-
-
-
     // Tell them they won!
     text("YOU WINNED!",width/2,height/2);
-
     // Draw a circle around the sausage dog to show where it is (even though
     // they already know because they found it!)
     noFill();
@@ -179,8 +174,13 @@ function draw() {
     strokeWeight(10);
     ellipse(targetX,targetY,targetImage.width,targetImage.height);
 
-
-
+    //make the winning image bounce on canvas edges
+    if (winImgX < 0 || winImgX > width) {
+        winImgVX *= -1;
+      }
+    if (winImgY < 0 || winImgY > height) {
+        winImgVY *= -1;
+      }
   }
 }
 
