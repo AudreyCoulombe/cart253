@@ -25,6 +25,10 @@ let playerRadius = 25;
 let playerVX = 0;
 let playerVY = 0;
 let playerMaxSpeed = 2;
+//player speed when sprinting (when shift is pressed)
+let playerSprintSpeed = 6;
+//Plyer speed when not sprinting
+let playerInitialSpeed = 2;
 // Player health
 let playerHealth;
 let playerMaxHealth = 255;
@@ -38,6 +42,7 @@ let preyRadius = 25;
 let preyVX;
 let preyVY;
 let preyMaxSpeed = 4;
+
 //2 dimensions time variables for noise movement of prey
 let tx;
 let ty;
@@ -139,6 +144,14 @@ function handleInput() {
   }
   else {
     playerVY = 0;
+  }
+
+  //Making the player sprint when shift is pressed
+  if (keyIsDown(16)){
+    playerMaxSpeed = playerSprintSpeed;
+  }
+  else {
+    playerMaxSpeed = playerInitialSpeed;
   }
 }
 
