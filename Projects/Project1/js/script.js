@@ -38,6 +38,9 @@ let preyRadius = 25;
 let preyVX;
 let preyVY;
 let preyMaxSpeed = 4;
+//2 dimensions time variables for noise movement of prey
+let tx;
+let ty;
 // Prey health
 let preyHealth;
 let preyMaxHealth = 100;
@@ -60,6 +63,9 @@ function setup() {
   // We're using simple functions to separate code out
   setupPrey();
   setupPlayer();
+//give a random value to  time variables for noise movement of prey
+  tx=random(0,1000);
+  ty=random(0,1000);
 }
 
 // setupPrey()
@@ -215,23 +221,27 @@ function checkEating() {
 //
 // Moves the prey based on random velocity changes
 function movePrey() {
-  // Change the prey's velocity at random intervals
-  // random() will be < 0.05 5% of the time, so the prey
-  // will change direction on 5% of frames
-  if (random() < 0.05) {
-    // Set velocity based on random values to get a new direction
-    // and speed of movement
-    //
-    // Use map() to convert from the 0-1 range of the random() function
-    // to the appropriate range of velocities for the prey
-    preyVX = map(random(), 0, 1, -preyMaxSpeed, preyMaxSpeed);
-    preyVY = map(random(), 0, 1, -preyMaxSpeed, preyMaxSpeed);
-  }
+        // Change the prey's velocity at random intervals
+        // random() will be < 0.05 5% of the time, so the prey
+        // will change direction on 5% of frames
+        //if (random() < 0.05) {
+        // Set velocity based on random values to get a new direction
+        // and speed of movement
+        // Use map() to convert from the 0-1 range of the random() function
+        // to the appropriate range of velocities for the prey
+        //old code: preyVX = map(random(), 0, 1, -preyMaxSpeed, preyMaxSpeed);
+        //old code: preyVY = map(random(), 0, 1, -preyMaxSpeed, preyMaxSpeed);
+    //Use map() to convert from the 0-1 range of the noise function
+    preyVX = map(noise(tx), 0, 1, -preyMaxSpeed, preyMaxSpeed);
+    preyVY = map(noise(ty), 0, 1, -preyMaxSpeed, preyMaxSpeed);
 
   // Update prey position based on velocity
   preyX = preyX + preyVX;
   preyY = preyY + preyVY;
 
+  //increase time values (to update prey velocity)
+  tx += 0.01;
+  ty += 0.01;
   // Screen wrapping
   if (preyX < 0) {
     preyX = preyX + width;
