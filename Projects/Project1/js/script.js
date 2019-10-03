@@ -146,9 +146,10 @@ function handleInput() {
     playerVY = 0;
   }
 
-  //Making the player sprint when shift is pressed
+  //Making the player sprint and loose health faster when shift is pressed
   if (keyIsDown(16)){
     playerMaxSpeed = playerSprintSpeed;
+    playerHealth = playerHealth - 2;
   }
   else {
     playerMaxSpeed = playerInitialSpeed;
