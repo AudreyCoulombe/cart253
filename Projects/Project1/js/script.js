@@ -23,14 +23,16 @@ let playerX;
 let playerY;
 let playerRadius = 25;
 //Radius increasement when the player eats the prey
-let increaseRadius=1;
+let increaseRadius = 0.5;
 let playerVX = 0;
 let playerVY = 0;
 let playerMaxSpeed = 2;
 //player speed when sprinting (when shift is pressed)
 let playerSprintSpeed = 6;
-//Plyer speed when not sprinting
+//Player speed when not sprinting
 let playerInitialSpeed = 2;
+//decrease player speed when eating
+let decreaseSpeed = 0.05;
 // Player health
 let playerHealth;
 let playerMaxHealth = 255;
@@ -104,7 +106,6 @@ function setupPlayer() {
 // When the game is over, shows the game over screen.
 function draw() {
   background(100, 100, 200);
-
   if (!gameOver) {
     handleInput();
 
@@ -219,8 +220,14 @@ function checkEating() {
     preyHealth = preyHealth - eatHealth;
     // Constrain to the possible range
     preyHealth = constrain(preyHealth, 0, preyMaxHealth);
-    //increase player radius when she/he/it eats the prey
+    //increase player radius when eating prey
     playerRadius += increaseRadius;
+    //constrain the radius to a sensible range
+    playerRadius = constrain(playerRadius,playerRadius,40);
+    //decrease player speed when eating prey
+    playerInitialSpeed -= decreaseSpeed;
+    //constrain the speed to a sensible range
+    playerInitialSpeed = constrain(playerInitialSpeed,1,playerInitialSpeed);
 
     // Check if the prey died (health 0)
     if (preyHealth === 0) {
