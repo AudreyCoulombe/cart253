@@ -22,6 +22,8 @@ let gameOver = false;
 let playerX;
 let playerY;
 let playerRadius = 25;
+//Radius increasement when the player eats the prey
+let increaseRadius=1;
 let playerVX = 0;
 let playerVY = 0;
 let playerMaxSpeed = 2;
@@ -217,6 +219,8 @@ function checkEating() {
     preyHealth = preyHealth - eatHealth;
     // Constrain to the possible range
     preyHealth = constrain(preyHealth, 0, preyMaxHealth);
+    //increase player radius when she/he/it eats the prey
+    playerRadius += increaseRadius;
 
     // Check if the prey died (health 0)
     if (preyHealth === 0) {
