@@ -26,11 +26,12 @@ let playerRadius = 25;
 let increaseRadius = 0.5;
 let playerVX = 0;
 let playerVY = 0;
-let playerMaxSpeed = 2;
+//Tuning: increase player (and prey) speed so the game goes faster and is more fun to play
+let playerMaxSpeed = 4;
 //player speed when sprinting (when shift is pressed)
 let playerSprintSpeed = 6;
 //Player speed when not sprinting
-let playerInitialSpeed = 2;
+let playerInitialSpeed = 4;
 //decrease player speed when eating
 let decreaseSpeed = 0.05;
 // Player health
@@ -42,10 +43,12 @@ let playerFill = 50;
 // Prey position, size, velocity
 let preyX;
 let preyY;
-let preyRadius = 25;
+//Tuning: decrease prey radius so it is harder to catch
+let preyRadius = 20;
 let preyVX;
 let preyVY;
-let preyMaxSpeed = 4;
+//Tuning: increase prey speed so the game goes faster and the prey is harder to catch
+let preyMaxSpeed = 9;
 
 //2 dimensions time variables for noise movement of prey
 let tx;
@@ -257,16 +260,17 @@ function movePrey() {
         //old code: preyVX = map(random(), 0, 1, -preyMaxSpeed, preyMaxSpeed);
         //old code: preyVY = map(random(), 0, 1, -preyMaxSpeed, preyMaxSpeed);
     //Use map() to convert from the 0-1 range of the noise function
-    preyVX = map(noise(tx), 0, 1, -preyMaxSpeed, preyMaxSpeed);
-    preyVY = map(noise(ty), 0, 1, -preyMaxSpeed, preyMaxSpeed);
+  preyVX = map(noise(tx), 0, 1, -preyMaxSpeed, preyMaxSpeed);
+  preyVY = map(noise(ty), 0, 1, -preyMaxSpeed, preyMaxSpeed);
 
   // Update prey position based on velocity
   preyX = preyX + preyVX;
   preyY = preyY + preyVY;
 
   //increase time values (to update prey velocity)
-  tx += 0.01;
-  ty += 0.01;
+  //Tuning: Increase the time value so the prey changes direction more quickly and is less predictable
+  tx += 0.06;
+  ty += 0.06;
   // Screen wrapping
   if (preyX < 0) {
     preyX = preyX + width;
