@@ -63,12 +63,24 @@ let preyFill = 200;
 let eatHealth = 10;
 // Number of prey eaten during the game (the "score")
 let preyEaten = 0;
+// Images for background player and prey
+let underWaterBackground;
+let turtlePlayer;
+let plasticBagPrey;
+
+//preload
+function preload() {
+  // Loads the background, player and prey images before the program starts
+  underWaterBackground = loadImage("assets/images/underwater.jpeg");
+  turtlePlayer = loadImage("assets/images/turtle.png");
+  plasticBagPrey = loadImage("assets/images/plasticBag.png");
+}
 
 // setup()
 //
 // Sets up the basic elements of the game
 function setup() {
-  createCanvas(500, 500);
+  createCanvas(500,500);
 
   noStroke();
 
@@ -108,7 +120,9 @@ function setupPlayer() {
 // displays the two agents.
 // When the game is over, shows the game over screen.
 function draw() {
-  background(100, 100, 200);
+  //draw the background with the underwater image
+  image(underWaterBackground,0,0,width,height);
+
   if (!gameOver) {
     handleInput();
 
@@ -226,7 +240,7 @@ function checkEating() {
     //increase player radius when eating prey
     playerRadius += increaseRadius;
     //constrain the radius to a sensible range
-    playerRadius = constrain(playerRadius,playerRadius,40);
+    playerRadius = constrain(playerRadius,25,40);
     //decrease player speed when eating prey
     playerInitialSpeed -= decreaseSpeed;
     //constrain the speed to a sensible range
@@ -291,16 +305,26 @@ function movePrey() {
 //
 // Draw the prey as an ellipse with alpha based on health
 function drawPrey() {
-  fill(preyFill, preyHealth);
-  ellipse(preyX, preyY, preyRadius * 2);
+  push();
+  imageMode(CENTER);
+  //tint the prey image so its opacity reflects its health
+  tint(255, preyHealth);
+  //draw the player with the plastic bag image
+  image(plasticBagPrey,preyX,preyY,preyRadius * 2,preyRadius * 2);
+  pop();
 }
 
 // drawPlayer()
 //
 // Draw the player as an ellipse with alpha value based on health
 function drawPlayer() {
-  fill(playerFill, playerHealth);
-  ellipse(playerX, playerY, playerRadius * 2);
+  push();
+  imageMode(CENTER);
+  //tint the player image so its opacity reflects its health
+  tint(255, playerHealth);
+  //draw the player with the turtle image
+  image(turtlePlayer,playerX,playerY,playerRadius*2,playerRadius*2);
+  pop();
 }
 
 // showGameOver()
