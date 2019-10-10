@@ -21,9 +21,9 @@ let gameOver = false;
 // Player position, size, velocity
 let playerX;
 let playerY;
-let playerRadius = 25;
+let playerRadius = 50;
 //Radius increasement when the player eats the prey
-let increaseRadius = 0.5;
+let increaseRadius = 1;
 let playerVX = 0;
 let playerVY = 0;
 //Tuning: increase player (and prey) speed so the game goes faster and is more fun to play
@@ -36,7 +36,7 @@ let playerInitialSpeed = 4;
 let decreaseSpeed = 0.05;
 // Player health
 let playerHealth;
-let playerMaxHealth = 255;
+let playerMaxHealth = 650;
 // Player fill color
 let playerFill = 50;
 
@@ -44,7 +44,7 @@ let playerFill = 50;
 let preyX;
 let preyY;
 //Tuning: decrease prey radius so it is harder to catch
-let preyRadius = 20;
+let preyRadius = 40;
 let preyVX;
 let preyVY;
 //Tuning: increase prey speed so the game goes faster and the prey is harder to catch
@@ -66,28 +66,29 @@ let preyEaten = 0;
 // Images for background, player and prey
 let underWaterBackground;
 let turtlePlayer;
-let plasticBagPrey;
+let jellyfishPrey;
 
 // state of the game
 let started = false;
 
 // sounds in the game
 let bubbleSound;
+let eatingSound;
 
 //preload
 function preload() {
   // Loads background, player and prey images before the program starts
-  underWaterBackground = loadImage("assets/images/underwater.jpeg");
+  underWaterBackground = loadImage("assets/images/underwaterPlasticBags.jpg");
   turtlePlayer = loadImage("assets/images/turtle.png");
-  plasticBagPrey = loadImage("assets/images/plasticBag.png");
+  jellyfishPrey = loadImage("assets/images/jellyfish.png");
   // Loads sound before the program starts
   bubbleSound = loadSound("assets/sounds/bubbleSound.wav");
-
+  eatingSound = loadSound("assets/sounds/SuspenseChord.wav");
 }
 
 // Sets up the basic elements of the game
 function setup() {
-  createCanvas(500,500);
+  createCanvas(windowWidth,windowHeight);
   noStroke();
 
   // We're using simple functions to separate code out
@@ -106,7 +107,6 @@ function setupPrey() {
   preyVY = preyMaxSpeed;
   preyHealth = preyMaxHealth;
 }
-
 // Initialises player position and health
 function setupPlayer() {
   playerX = 4 * width / 5;
@@ -114,8 +114,6 @@ function setupPlayer() {
   playerHealth = playerMaxHealth;
 }
 
-// draw()
-//
 // Displays start page when the game has not started
 // While the game is active, checks input
 // updates positions of prey and player,
@@ -141,6 +139,9 @@ function draw() {
 
       drawPrey();
       drawPlayer();
+
+      displayScore();
+      healthBar();
     }
     else {
       showGameOver();
@@ -240,11 +241,13 @@ function checkEating() {
     //increase player radius when eating prey
     playerRadius += increaseRadius;
     //constrain the radius to a sensible range
-    playerRadius = constrain(playerRadius,25,40);
+    playerRadius = constrain(playerRadius,50,150);
     //decrease player speed when eating prey
     playerInitialSpeed -= decreaseSpeed;
     //constrain the speed to a sensible range
     playerInitialSpeed = constrain(playerInitialSpeed,1,playerInitialSpeed);
+    // plays a sound to let you know you ate a prey
+    eatingSound.play();
     // Check if the prey died (health 0)
     if (preyHealth === 0) {
       // Move the "new" prey to a random position
@@ -287,14 +290,12 @@ function movePrey() {
   }
 }
 
-// Draw the prey as a plastic bag with alpha based on health
+// Draw the prey as a jellyfish
 function drawPrey() {
   push();
   imageMode(CENTER);
-  //tint the prey image so its opacity reflects its health
-  tint(255, preyHealth);
-  //draw the player with the plastic bag image
-  image(plasticBagPrey,preyX,preyY,preyRadius * 2,preyRadius * 2);
+  //draw the prey with the jellyfish image
+  image(jellyfishPrey,preyX,preyY,preyRadius * 2,preyRadius * 2);
   pop();
 }
 
@@ -317,20 +318,11 @@ function showGameOver() {
   fill(255);
   noStroke();
   // Set up the text to display in white
-  let gameOverText = "Congradulation you killed one more turtle!\n"; // \n means "new line"
-  gameOverText = gameOverText + "It ate " + preyEaten + " plastic bags\n";
+  let gameOverText = "GAME OVER\n"; // \n means "new line"
+  gameOverText = gameOverText + "You ate " + preyEaten + " jellyfish\n";
   gameOverText = gameOverText + "before dying.";
   // Display the white text
   text(gameOverText, width / 2, height / 2);
-
-  push();
-  // Set up the text to display in red
-  fill(255,0,0);
-  textSize(27);
-  let awarenessText= "You should feel ashamed of yourself!\n";
-  // Display the red text
-  text(awarenessText,width / 2, height / 2 + 70);
-  pop();
 }
 
 // When mouse is pressed, start the game and the sound
@@ -356,4 +348,28 @@ function displayStartPage(){
   // display prey
   drawPrey();
   movePrey();
+}
+
+//Display score on top right of the screen
+function displayScore () {
+  //setup font
+  textAlign(LEFT,TOP);
+  textSize(25);
+  fill(255);
+  noStroke();
+  //display text
+  text("Eaten jellyfish: "+ preyEaten,35,20);
+}
+
+//diplay player health on a visual bar
+function healthBar(){
+  let healthValue;
+  //map the player's health with the width of the bar
+  healthValue = map(playerHealth, 0,650,0,300);
+  //setup the bar visuals
+  fill(255,0,0);
+  rect(35,50,300,20);
+  fill(0,255,0);
+  //display health loss on bar
+  rect(35,50,healthValue,20);
 }
