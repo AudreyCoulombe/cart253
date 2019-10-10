@@ -3,7 +3,7 @@
 /******************************************************
 
 Game - Chaser
-Pippin Barr
+Audrey Coulombe
 
 A "simple" game of cat and mouse. The player is a circle and can move with keys,
 if they overlap the (randomly moving) prey they "eat it" by sucking out its life
@@ -63,37 +63,41 @@ let preyFill = 200;
 let eatHealth = 10;
 // Number of prey eaten during the game (the "score")
 let preyEaten = 0;
-// Images for background player and prey
+// Images for background, player and prey
 let underWaterBackground;
 let turtlePlayer;
 let plasticBagPrey;
 
+// state of the game
+let started = false;
+
+// sounds in the game
+let bubbleSound;
+
 //preload
 function preload() {
-  // Loads the background, player and prey images before the program starts
+  // Loads background, player and prey images before the program starts
   underWaterBackground = loadImage("assets/images/underwater.jpeg");
   turtlePlayer = loadImage("assets/images/turtle.png");
   plasticBagPrey = loadImage("assets/images/plasticBag.png");
+  // Loads sound before the program starts
+  bubbleSound = loadSound("assets/sounds/bubbleSound.wav");
+
 }
 
-// setup()
-//
 // Sets up the basic elements of the game
 function setup() {
   createCanvas(500,500);
-
   noStroke();
 
   // We're using simple functions to separate code out
   setupPrey();
   setupPlayer();
-//give a random value to  time variables for noise movement of prey
+//give a random value to time variables for noise movement of prey
   tx=random(0,1000);
   ty=random(0,1000);
 }
 
-// setupPrey()
-//
 // Initialises prey's position, velocity, and health
 function setupPrey() {
   preyX = width / 5;
@@ -103,8 +107,6 @@ function setupPrey() {
   preyHealth = preyMaxHealth;
 }
 
-// setupPlayer()
-//
 // Initialises player position and health
 function setupPlayer() {
   playerX = 4 * width / 5;
@@ -114,34 +116,38 @@ function setupPlayer() {
 
 // draw()
 //
+// Displays start page when the game has not started
 // While the game is active, checks input
 // updates positions of prey and player,
 // checks health (dying), checks eating (overlaps)
 // displays the two agents.
 // When the game is over, shows the game over screen.
 function draw() {
-  //draw the background with the underwater image
-  image(underWaterBackground,0,0,width,height);
 
-  if (!gameOver) {
-    handleInput();
-
-    movePlayer();
-    movePrey();
-
-    updateHealth();
-    checkEating();
-
-    drawPrey();
-    drawPlayer();
-  }
+  if (!started) {
+    displayStartPage();
+    }
   else {
-    showGameOver();
+    //draw the background with the underwater image
+    image(underWaterBackground,0,0,width,height);
+    if (!gameOver) {
+      handleInput();
+
+      movePlayer();
+      movePrey();
+
+      updateHealth();
+      checkEating();
+
+      drawPrey();
+      drawPlayer();
+    }
+    else {
+      showGameOver();
+    }
   }
 }
 
-// handleInput()
-//
 // Checks arrow keys and adjusts player velocity accordingly
 function handleInput() {
   // Check for horizontal movement
@@ -176,8 +182,6 @@ function handleInput() {
   }
 }
 
-// movePlayer()
-//
 // Updates player position based on velocity,
 // wraps around the edges.
 function movePlayer() {
@@ -205,8 +209,6 @@ function movePlayer() {
   }
 }
 
-// updateHealth()
-//
 // Reduce the player's health (happens every frame)
 // Check if the player is dead
 function updateHealth() {
@@ -221,8 +223,6 @@ function updateHealth() {
   }
 }
 
-// checkEating()
-//
 // Check if the player overlaps the prey and updates health of both
 function checkEating() {
   // Get distance of player to prey
@@ -245,7 +245,6 @@ function checkEating() {
     playerInitialSpeed -= decreaseSpeed;
     //constrain the speed to a sensible range
     playerInitialSpeed = constrain(playerInitialSpeed,1,playerInitialSpeed);
-
     // Check if the prey died (health 0)
     if (preyHealth === 0) {
       // Move the "new" prey to a random position
@@ -259,28 +258,15 @@ function checkEating() {
   }
 }
 
-// movePrey()
-//
-// Moves the prey based on random velocity changes
+// Moves the prey based on velocity changes
 function movePrey() {
-        // Change the prey's velocity at random intervals
-        // random() will be < 0.05 5% of the time, so the prey
-        // will change direction on 5% of frames
-        //if (random() < 0.05) {
-        // Set velocity based on random values to get a new direction
-        // and speed of movement
-        // Use map() to convert from the 0-1 range of the random() function
-        // to the appropriate range of velocities for the prey
-        //old code: preyVX = map(random(), 0, 1, -preyMaxSpeed, preyMaxSpeed);
-        //old code: preyVY = map(random(), 0, 1, -preyMaxSpeed, preyMaxSpeed);
-    //Use map() to convert from the 0-1 range of the noise function
+  // Set velocity based on noise values to get a new direction and speed of movement
+  //Use map() to convert from the 0-1 range of the noise function
   preyVX = map(noise(tx), 0, 1, -preyMaxSpeed, preyMaxSpeed);
   preyVY = map(noise(ty), 0, 1, -preyMaxSpeed, preyMaxSpeed);
-
   // Update prey position based on velocity
   preyX = preyX + preyVX;
   preyY = preyY + preyVY;
-
   //increase time values (to update prey velocity)
   //Tuning: Increase the time value so the prey changes direction more quickly and is less predictable
   tx += 0.06;
@@ -301,9 +287,7 @@ function movePrey() {
   }
 }
 
-// drawPrey()
-//
-// Draw the prey as an ellipse with alpha based on health
+// Draw the prey as a plastic bag with alpha based on health
 function drawPrey() {
   push();
   imageMode(CENTER);
@@ -314,9 +298,7 @@ function drawPrey() {
   pop();
 }
 
-// drawPlayer()
-//
-// Draw the player as an ellipse with alpha value based on health
+// Draw the player as a turtle with alpha value based on health
 function drawPlayer() {
   push();
   imageMode(CENTER);
@@ -327,18 +309,51 @@ function drawPlayer() {
   pop();
 }
 
-// showGameOver()
-//
 // Display text about the game being over!
 function showGameOver() {
-  // Set up the font
-  textSize(32);
+  // Set up the font & display text in the centre of the screen
+  textSize(20);
   textAlign(CENTER, CENTER);
-  fill(0);
-  // Set up the text to display
-  let gameOverText = "GAME OVER\n"; // \n means "new line"
-  gameOverText = gameOverText + "You ate " + preyEaten + " prey\n";
-  gameOverText = gameOverText + "before you died."
-  // Display it in the centre of the screen
+  fill(255);
+  noStroke();
+  // Set up the text to display in white
+  let gameOverText = "Congradulation you killed one more turtle!\n"; // \n means "new line"
+  gameOverText = gameOverText + "It ate " + preyEaten + " plastic bags\n";
+  gameOverText = gameOverText + "before dying.";
+  // Display the white text
   text(gameOverText, width / 2, height / 2);
+
+  push();
+  // Set up the text to display in red
+  fill(255,0,0);
+  textSize(27);
+  let awarenessText= "You should feel ashamed of yourself!\n";
+  // Display the red text
+  text(awarenessText,width / 2, height / 2 + 70);
+  pop();
+}
+
+// When mouse is pressed, start the game and the sound
+function mousePressed() {
+  started = true;
+  //play sound in loop
+  bubbleSound.loop();
+}
+
+// Display text background and prey when the game has not started yet
+function displayStartPage(){
+  //display background image
+  image(underWaterBackground,0,0,width,height);
+  // Set up the font & display text in the centre of the screen
+  textSize(30);
+  textStyle(BOLD);
+  textAlign(CENTER, CENTER);
+  strokeWeight(2);
+  stroke(255);
+  noFill();
+  // display start text
+  text("CLICK TO START", width/2, height/2);
+  // display prey
+  drawPrey();
+  movePrey();
 }
