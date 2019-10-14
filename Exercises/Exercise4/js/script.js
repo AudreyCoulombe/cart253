@@ -32,7 +32,7 @@ let ball = {
 // PADDLES
 
 // Basic definition of a left paddle object with its key properties of
-// position, size, velocity, and speed
+// position, size, velocity, speed and score
 let leftPaddle = {
   x: 0,
   y: 0,
@@ -41,13 +41,14 @@ let leftPaddle = {
   vy: 0,
   speed: 5,
   upKey: 87,
-  downKey: 83
+  downKey: 83,
+  score: 0
 }
 
 // RIGHT PADDLE
 
 // Basic definition of a left paddle object with its key properties of
-// position, size, velocity, and speed
+// position, size, velocity, speed and score
 let rightPaddle = {
   x: 0,
   y: 0,
@@ -56,7 +57,8 @@ let rightPaddle = {
   vy: 0,
   speed: 5,
   upKey: 38,
-  downKey: 40
+  downKey: 40,
+  score: 0
 }
 
 // A variable to hold the beep sound we will play on bouncing
@@ -107,7 +109,7 @@ function draw() {
   background(bgColor);
 
   if (playing) {
-    // If the game is in play, we handle input and move the elements around
+    // If the game is in play, we handle input, move the elements around and show score
     handleInput(leftPaddle);
     handleInput(rightPaddle);
     updatePaddle(leftPaddle);
@@ -137,6 +139,7 @@ function draw() {
   displayPaddle(leftPaddle);
   displayPaddle(rightPaddle);
   displayBall();
+  displayScore();
 }
 
 // handleInput()
@@ -183,8 +186,14 @@ function updateBall() {
 // Checks if the ball has gone off the left or right
 // Returns true if so, false otherwise
 function ballIsOutOfBounds() {
-  // Check for ball going off the sides
-  if (ball.x < 0 || ball.x > width) {
+  // Checks for ball going off the left side
+  if (ball.x < 0) {
+    rightPaddle.score += 1;
+    return true;
+  }
+  // Checks for ball going off the right side
+  if (ball.x > width) {
+    leftPaddle.score += 1;
     return true;
   }
   else {
@@ -285,3 +294,12 @@ function displayStartMessage() {
 function mousePressed() {
   playing = true;
 }
+// displayScore()
+//
+// shows the score of each team on screen and on console
+function displayScore(){
+  console.log("left team score:"+leftPaddle.score);
+  console.log("right team score:"+rightPaddle.score);
+  text(rightPaddle.score, width-100, 100);
+  text(leftPaddle.score, 100, 100);
+  }
