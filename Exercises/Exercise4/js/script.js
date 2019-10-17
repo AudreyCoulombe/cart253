@@ -9,6 +9,8 @@
 // Up and down keys control the right hand paddle, W and S keys control
 // the left hand paddle
 
+// checks if the game is over
+let gameOver = false;
 // Whether the game has started
 let playing = false;
 
@@ -32,7 +34,7 @@ let ball = {
 // PADDLES
 
 // Basic definition of a left paddle object with its key properties of
-// position, size, velocity, speed and score
+// position, size, velocity, speed, score and opacity
 let leftPaddle = {
   x: 0,
   y: 0,
@@ -42,13 +44,14 @@ let leftPaddle = {
   speed: 5,
   upKey: 87,
   downKey: 83,
-  score: 0
+  score: 0,
+  opacity: 255
 }
 
 // RIGHT PADDLE
 
 // Basic definition of a left paddle object with its key properties of
-// position, size, velocity, speed and score
+// position, size, velocity, speed, score and opacity
 let rightPaddle = {
   x: 0,
   y: 0,
@@ -58,7 +61,8 @@ let rightPaddle = {
   speed: 5,
   upKey: 38,
   downKey: 40,
-  score: 0
+  score: 0,
+  opacity: 255
 }
 
 // A variable to hold the beep sound we will play on bouncing
@@ -103,13 +107,13 @@ function setupPaddles() {
 // draw()
 //
 // Calls the appropriate functions to run the game
-// See how tidy it looks?!
 function draw() {
   // Fill the background
   background(bgColor);
 
-  if (playing) {
-    // If the game is in play, we handle input, move the elements around and show score
+  if (playing && !gameOver) {
+    // If the game is in play, we check if game is over, handle input, move the elements around and show score
+    checkGameOver();
     handleInput(leftPaddle);
     handleInput(rightPaddle);
     updatePaddle(leftPaddle);
@@ -130,16 +134,21 @@ function draw() {
       // the ball went off...
     }
   }
-  else {
-    // Otherwise we display the message to start the game
-    displayStartMessage();
-  }
 
-  // We always display the paddles and ball so it looks like Pong!
+  // We always display the paddles, ball and score on console
   displayPaddle(leftPaddle);
   displayPaddle(rightPaddle);
   displayBall();
   displayScore();
+
+  //if the game is over, display the game over message
+  if (gameOver) {
+    showGameOver();
+  }
+  //if not playing, display start message
+  else if (!playing) {
+    displayStartMessage();
+  }
 }
 
 // handleInput()
@@ -186,14 +195,16 @@ function updateBall() {
 // Checks if the ball has gone off the left or right
 // Returns true if so, false otherwise
 function ballIsOutOfBounds() {
-  // Checks for ball going off the left side
+  // Checks for ball going off the left side. If it does, upgrades score and opacity
   if (ball.x < 0) {
     rightPaddle.score += 1;
+    leftPaddle.opacity -= 25;
     return true;
   }
-  // Checks for ball going off the right side
+  // Checks for ball going off the right side. If it does, upgrades score and opacity
   if (ball.x > width) {
     leftPaddle.score += 1;
+    rightPaddle.opacity -= 25;
     return true;
   }
   else {
@@ -253,8 +264,11 @@ function checkBallPaddleCollision(paddle) {
 //
 // Draws the specified paddle
 function displayPaddle(paddle) {
-  // Draw the paddles
+  // Draw the paddles with the opacity variable
+  push();
+  fill(fgColor,paddle.opacity);
   rect(paddle.x, paddle.y, paddle.w, paddle.h);
+  pop();
 }
 
 // displayBall()
@@ -296,10 +310,32 @@ function mousePressed() {
 }
 // displayScore()
 //
-// shows the score of each team on screen and on console
+// shows the score of each team on console
 function displayScore(){
   console.log("left team score:"+leftPaddle.score);
   console.log("right team score:"+rightPaddle.score);
-  text(rightPaddle.score, width-100, 100);
-  text(leftPaddle.score, 100, 100);
+  }
+
+//checkGameOver()
+//
+// checks if one of the player have a score of ten or more. If so, the game is over.
+function checkGameOver(){
+if ((rightPaddle.score >= 10) || (leftPaddle.score >=10)) {
+  // If so, the game is over
+  gameOver = true;
+  }
+}
+
+//showGameOver()
+//
+// Display text about the game being over
+function showGameOver() {
+  // Set up the font & display text in the centre of the screen
+  textSize(50);
+  textAlign(CENTER, CENTER);
+  fill(255);
+  noStroke();
+  // Set up the text to display in white
+  let gameOverText = "GAME OVER\n"; // \n means "new line"
+  text(gameOverText, width / 2, height / 3);
   }
