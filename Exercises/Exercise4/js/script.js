@@ -125,13 +125,10 @@ function draw() {
     checkBallPaddleCollision(rightPaddle);
 
     // Check if the ball went out of bounds and respond if so
-    // (Note how we can use a function that returns a truth value
-    // inside a conditional!)
     if (ballIsOutOfBounds()) {
       // If it went off either side, reset it
       resetBall();
-      // This is where we would likely count points, depending on which side
-      // the ball went off...
+      // This is where we would likely count points, depending on which side the ball went off...
     }
   }
 
@@ -153,8 +150,7 @@ function draw() {
 
 // handleInput()
 //
-// Checks the mouse and keyboard input to set the velocities of the
-// left and right paddles respectively.
+// Checks the mouse and keyboard input to set the velocities of the left and right paddles respectively.
 function handleInput(paddle) {
   // Move the paddle based on its up and down keys
   // If the up key is being pressed
@@ -266,7 +262,7 @@ function checkBallPaddleCollision(paddle) {
 function displayPaddle(paddle) {
   // Draw the paddles with the opacity variable
   push();
-  fill(fgColor,paddle.opacity);
+  fill(fgColor, paddle.opacity);
   rect(paddle.x, paddle.y, paddle.w, paddle.h);
   pop();
 }
@@ -281,13 +277,21 @@ function displayBall() {
 
 // resetBall()
 //
-// Sets the starting position and velocity of the ball
+// Initialise the ball's position and velocity
 function resetBall() {
-  // Initialise the ball's position and velocity
+  // if right team makes a point, reset ball and move it toward right team
+  if (ball.x < 0) {
+    ball.vx = ball.speed;
+  }
+  // if left team makes a point, reset ball and move it toward left team
+  else {
+    ball.vx = -ball.speed;
+  }
+  // Sets the starting position of the ball
   ball.x = width / 2;
   ball.y = height / 2;
-  ball.vx = ball.speed;
-  ball.vy = ball.speed;
+  // Sets a random velocity in y axe so the ball doesn't always arrive at same level when it resets
+  ball.vy = random(1, 6);
 }
 
 // displayStartMessage()
@@ -308,21 +312,22 @@ function displayStartMessage() {
 function mousePressed() {
   playing = true;
 }
+
 // displayScore()
 //
 // shows the score of each team on console
-function displayScore(){
-  console.log("left team score:"+leftPaddle.score);
-  console.log("right team score:"+rightPaddle.score);
-  }
+function displayScore() {
+  console.log("left team score:" + leftPaddle.score);
+  console.log("right team score:" + rightPaddle.score);
+}
 
 //checkGameOver()
 //
 // checks if one of the player have a score of ten or more. If so, the game is over.
-function checkGameOver(){
-if ((rightPaddle.score >= 10) || (leftPaddle.score >=10)) {
-  // If so, the game is over
-  gameOver = true;
+function checkGameOver() {
+  if ((rightPaddle.score >= 10) || (leftPaddle.score >= 10)) {
+    // If so, the game is over
+    gameOver = true;
   }
 }
 
@@ -335,7 +340,12 @@ function showGameOver() {
   textAlign(CENTER, CENTER);
   fill(255);
   noStroke();
-  // Set up the text to display in white
-  let gameOverText = "GAME OVER\n"; // \n means "new line"
-  text(gameOverText, width / 2, height / 3);
+  // If right team has 10 points or more, display a message saying the right team won
+  if (rightPaddle.score >= 10) {
+    text("Right team wins!", width / 2, height / 3);
   }
+  // If left team has 10 points or more, display a message saying the left team won
+  else if (leftPaddle.score >= 10) {
+    text("Left team wins!", width / 2, height / 3);
+  }
+}
