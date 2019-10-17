@@ -1,13 +1,10 @@
 "use strict";
 
-// Pong
+// Tennis Pong
 // by Audrey Coulombe
 //
-// A "simple" implementation of Pong with no scoring system
-// just the ability to play the game with the keyboard.
-//
-// Up and down keys control the right hand paddle, W and S keys control
-// the left hand paddle
+// A "simple" implementation of Pong with scoring system based on opacity
+// Up and down keys control the right hand paddle, W and S keys control the left hand paddle
 
 // checks if the game is over
 let gameOver = false;
@@ -19,9 +16,7 @@ let bgColor = 0;
 let fgColor = 255;
 
 // BALL
-
-// A ball object with the properties of
-// position, size, velocity, and speed
+// A ball object with the properties of position, size, velocity, and speed
 let ball = {
   x: 0,
   y: 0,
@@ -32,9 +27,7 @@ let ball = {
 }
 
 // PADDLES
-
-// Basic definition of a left paddle object with its key properties of
-// position, size, velocity, speed, score and opacity
+// Basic definition of a left paddle object with its key properties of position, size, velocity, speed, score and opacity
 let leftPaddle = {
   x: 0,
   y: 0,
@@ -49,9 +42,7 @@ let leftPaddle = {
 }
 
 // RIGHT PADDLE
-
-// Basic definition of a left paddle object with its key properties of
-// position, size, velocity, speed, score and opacity
+// Basic definition of a left paddle object with its key properties of position, size, velocity, speed, score and opacity
 let rightPaddle = {
   x: 0,
   y: 0,
@@ -65,14 +56,25 @@ let rightPaddle = {
   opacity: 255
 }
 
-// A variable to hold the beep sound we will play on bouncing
+// sound variables
 let beepSFX;
+let cheeringSFX;
+let tennisGruntSFX;
+
+// images variables for background and ball
+let tennisYardBg;
+let tennisBall;
 
 // preload()
 //
-// Loads the beep audio for the sound of bouncing
+// Loads the beep, grunt and cheering audio and the images for the backgroung and the ball
 function preload() {
   beepSFX = new Audio("assets/sounds/beep.wav");
+  tennisGruntSFX = new Audio("assets/sounds/tennisGrunt.mp3");
+  cheeringSFX = new Audio("assets/sounds/cheering.wav");
+
+  tennisYardBg = loadImage("assets/images/tennisYard.jpg");
+  tennisBall = loadImage("assets/images/tennisBall.png");
 }
 
 // setup()
@@ -108,8 +110,8 @@ function setupPaddles() {
 //
 // Calls the appropriate functions to run the game
 function draw() {
-  // Fill the background
-  background(bgColor);
+  // Draws background as a tennis yard
+  image(tennisYardBg, 0, 0, width, height);
 
   if (playing && !gameOver) {
     // If the game is in play, we check if game is over, handle input, move the elements around and show score
@@ -195,12 +197,17 @@ function ballIsOutOfBounds() {
   if (ball.x < 0) {
     rightPaddle.score += 1;
     leftPaddle.opacity -= 25;
-    return true;
   }
   // Checks for ball going off the right side. If it does, upgrades score and opacity
   if (ball.x > width) {
     leftPaddle.score += 1;
     rightPaddle.opacity -= 25;
+  }
+
+  if (ball.x < 0 || ball.x > width) {
+    // Play cheering sound effect by rewinding and then playing
+    cheeringSFX.currentTime = 0;
+    cheeringSFX.play();
     return true;
   }
   else {
@@ -249,9 +256,9 @@ function checkBallPaddleCollision(paddle) {
       // Then the ball is touching the paddle
       // Reverse its vx so it starts travelling in the opposite direction
       ball.vx = -ball.vx;
-      // Play our bouncing sound effect by rewinding and then playing
-      beepSFX.currentTime = 0;
-      beepSFX.play();
+      // Play our grunt sound effect by rewinding and then playing
+      tennisGruntSFX.currentTime = 0;
+      tennisGruntSFX.play();
     }
   }
 }
@@ -269,10 +276,10 @@ function displayPaddle(paddle) {
 
 // displayBall()
 //
-// Draws the ball on screen as a square
+// Draws the ball on screen as a tennis ball
 function displayBall() {
   // Draw the ball
-  rect(ball.x, ball.y, ball.size, ball.size);
+  image(tennisBall, ball.x, ball.y, ball.size, ball.size);
 }
 
 // resetBall()
@@ -284,14 +291,18 @@ function resetBall() {
     ball.vx = ball.speed;
   }
   // if left team makes a point, reset ball and move it toward left team
-  else {
+  else if (ball.x > width) {
     ball.vx = -ball.speed;
+  }
+  // if the game just started and no point has been made yet, move the ball toward the right
+  else {
+    ball.vx = ball.speed;
   }
   // Sets the starting position of the ball
   ball.x = width / 2;
   ball.y = height / 2;
   // Sets a random velocity in y axe so the ball doesn't always arrive at same level when it resets
-  ball.vy = random(1, 6);
+  ball.vy = random(-4, 4);
 }
 
 // displayStartMessage()
