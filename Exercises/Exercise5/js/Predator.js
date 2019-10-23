@@ -1,8 +1,8 @@
 // Predator
 //
 // A class that represents a simple predator
-// controlled by the arrow keys. It can move around
-// the screen and consume Prey objects to maintain its health.
+// controlled by the A,W,S,D,F and the arrows with the shift keys.
+// It can move around the screen and consume Prey objects to maintain its health.
 
 class Predator {
 
@@ -10,7 +10,7 @@ class Predator {
   //
   // Sets the initial values for the Predator's properties
   // Either sets default values or uses the arguments provided
-  constructor(x, y, speed, fillColor, radius, upKey, downKey, leftKey, rightKey, sprintKey) {
+  constructor(x, y, speed, radius, upKey, downKey, leftKey, rightKey, sprintKey) {
     // Position
     this.x = x;
     this.y = y;
@@ -24,7 +24,6 @@ class Predator {
     this.healthLossPerMove = 0.1;
     this.healthGainPerEat = 1;
     // Display properties
-    this.fillColor = fillColor;
     this.radius = this.health; // Radius is defined in terms of health
     // Input properties are used as arguments
     this.upKey = upKey;
@@ -38,34 +37,28 @@ class Predator {
 
   // handleInput
   //
-  // Checks if an arrow key is pressed and sets the predator's
-  // velocity appropriately.
+  // Checks if a key is pressed and sets the predator's velocity appropriately.
   handleInput() {
     // Horizontal movement
     if (keyIsDown(this.leftKey)) {
       this.vx = -this.speed;
-    }
-    else if (keyIsDown(this.rightKey)) {
+    } else if (keyIsDown(this.rightKey)) {
       this.vx = this.speed;
-    }
-    else {
+    } else {
       this.vx = 0;
     }
     // Vertical movement
     if (keyIsDown(this.upKey)) {
       this.vy = -this.speed;
-    }
-    else if (keyIsDown(this.downKey)) {
+    } else if (keyIsDown(this.downKey)) {
       this.vy = this.speed;
-    }
-    else {
+    } else {
       this.vy = 0;
     }
     // Sprinting speed
     if (keyIsDown(this.sprintKey)) {
       this.speed += 2;
-    }
-    else {
+    } else {
       this.speed = 5;
     }
   }
@@ -94,15 +87,13 @@ class Predator {
     // Off the left or right
     if (this.x < 0) {
       this.x += width;
-    }
-    else if (this.x > width) {
+    } else if (this.x > width) {
       this.x -= width;
     }
     // Off the top or bottom
     if (this.y < 0) {
       this.y += height;
-    }
-    else if (this.y > height) {
+    } else if (this.y > height) {
       this.y -= height;
     }
   }
@@ -134,15 +125,14 @@ class Predator {
 
   // display
   //
-  // Draw the predator as an ellipse on the canvas with a radius the same size as its current health.
+  // Draw the predators as images with a size corresponding to its current health.
   //displays the number of prey eaten
-  display(predatorName, textX, textY) {
-    push();
-    noStroke();
-    fill(this.fillColor);
+  display(predatorImage, predatorName, textX, textY) {
     this.radius = this.health;
-    ellipse(this.x, this.y, this.radius * 2);
-    pop();
+    // If the predator is not dead, draw it as an image
+    if (this.radius > 0) {
+      image(predatorImage, this.x, this.y, this.radius * 2, this.radius * 2);
+    }
     push();
     // Set up the font & display text from the center
     textAlign(CENTER, CENTER);

@@ -2,8 +2,8 @@
 // by Audrey Coulombe
 //
 // Creates two predators and three prey (of different sizes and speeds)
-// The predator chases the prey using the arrow keys and consumes them.
-// The predator loses health over time, so must keep eating to survive.
+// The predators chase the preys and consume them using the A,W,S,D,F and the arrows with the shift keys.
+// The predators loose health over time, so must keep eating to survive.
 
 // Our predators
 let tiger;
@@ -14,17 +14,35 @@ let antelope;
 let zebra;
 let bee;
 
+// Images for predators and preys
+let tigerImage;
+let lionImage;
+let antelopeImage;
+let zebraImage;
+let beeImage;
+
+// preload()
+//
+// Preloads the images for predators and preys
+function preload() {
+  tigerImage = loadImage("assets/images/tigerPredator.png");
+  lionImage = loadImage("assets/images/lionPredator.png");
+  antelopeImage = loadImage("assets/images/antelopePrey.png");
+  zebraImage = loadImage("assets/images/zebraPrey.png");
+  beeImage = loadImage("assets/images/beePrey.png");
+}
+
 // setup()
 //
 // Sets up a canvas
-// Creates objects for the predator and three prey
+// Creates objects for two predators and three prey
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  tiger = new Predator(width-100, 100, 5, color(200, 200, 0), 40, UP_ARROW, DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW,16);
-  lion = new Predator(100, 100, 5, color(168, 129, 50), 40, 87, 83, 65, 68,70);
-  antelope = new Prey(100, 100, 10, color(255, 100, 10), 50);
-  zebra = new Prey(100, 100, 8, color(255, 255, 255), 60);
-  bee = new Prey(100, 100, 20, color(255, 255, 0), 10);
+  tiger = new Predator(width - 100, 100, 5, 40, UP_ARROW, DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, 16);
+  lion = new Predator(100, 100, 5, 40, 87, 83, 65, 68, 70);
+  antelope = new Prey(100, 100, 10, 50);
+  zebra = new Prey(100, 100, 8, 60);
+  bee = new Prey(100, 100, 20, 10);
 }
 
 // draw()
@@ -56,9 +74,9 @@ function draw() {
   lion.handleEating(bee);
 
   // Display all the "animals" and the score of each predator
-  tiger.display("Tiger: ",width-100,50); //values in parenthesis are respectively: (predatorName, textX, textY)
-  lion.display("Lion: ",100,50); //values in parenthesis are respectively: (predatorName, textX, textY)
-  antelope.display();
-  zebra.display();
-  bee.display();
+  tiger.display(tigerImage, "Tiger: ", width - 100, 50); //values in parenthesis are respectively: (predatorName, textX, textY)
+  lion.display(lionImage, "Lion: ", 100, 50); //values in parenthesis are respectively: (predatorName, textX, textY)
+  antelope.display(antelopeImage);
+  zebra.display(zebraImage);
+  bee.display(beeImage);
 }
