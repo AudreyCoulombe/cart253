@@ -114,9 +114,12 @@ class Predator {
       this.health = constrain(this.health, 0, this.maxHealth);
       // Decrease prey health by the same amount
       prey.health -= this.healthGainPerEat;
-      // Check if the prey died and reset it if so
+      // Check if the prey died. If so, resets it and change the score
       if (prey.health < 0) {
         prey.reset();
+        // Change the score when a prey is fully eaten and display it on the console
+        this.numberOfPreyEaten += 1;
+        console.log("Number of prey eaten:" + this.numberOfPreyEaten);
       }
     }
   }
