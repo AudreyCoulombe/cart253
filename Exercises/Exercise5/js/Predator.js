@@ -31,6 +31,8 @@ class Predator {
     this.downKey = downkey;
     this.leftKey = leftkey;
     this.rightKey = rightkey;
+    //keeping track of the score property
+    this.numberOfPreyEaten = 0;
   }
 
   // handleInput
