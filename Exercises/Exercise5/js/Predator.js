@@ -10,7 +10,7 @@ class Predator {
   //
   // Sets the initial values for the Predator's properties
   // Either sets default values or uses the arguments provided
-  constructor(x, y, speed, fillColor, radius, upkey, downkey, leftkey, rightkey) {
+  constructor(x, y, speed, fillColor, radius, upKey, downKey, leftKey, rightKey, sprintKey) {
     // Position
     this.x = x;
     this.y = y;
@@ -27,10 +27,11 @@ class Predator {
     this.fillColor = fillColor;
     this.radius = this.health; // Radius is defined in terms of health
     // Input properties are used as arguments
-    this.upKey = upkey;
-    this.downKey = downkey;
-    this.leftKey = leftkey;
-    this.rightKey = rightkey;
+    this.upKey = upKey;
+    this.downKey = downKey;
+    this.leftKey = leftKey;
+    this.rightKey = rightKey;
+    this.sprintKey = sprintKey;
     //keeping track of the score property
     this.numberOfPreyEaten = 0;
   }
@@ -59,6 +60,13 @@ class Predator {
     }
     else {
       this.vy = 0;
+    }
+    // Sprinting speed
+    if (keyIsDown(this.sprintKey)) {
+      this.speed += 2;
+    }
+    else {
+      this.speed = 5;
     }
   }
 
