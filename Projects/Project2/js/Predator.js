@@ -121,14 +121,13 @@ class Predator {
 
   // display
   //
-  // Draw the predator as an ellipse on the canvas
+  // Draw the predator as a shark
   // with a radius the same size as its current health.
-  display() {
-    push();
-    noStroke();
-    fill(this.fillColor);
+  display(predatorImage) {
     this.radius = this.health;
-    ellipse(this.x, this.y, this.radius * 2);
-    pop();
+    // If the predator is not dead, draw it as an image
+    if (this.radius > 0) {
+      image(predatorImage, this.x, this.y, this.radius * 2, this.radius * 2);
+    }
   }
 }

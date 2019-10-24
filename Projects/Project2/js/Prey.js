@@ -70,15 +70,13 @@ class Prey {
 
   // display
   //
-  // Draw the prey as an ellipse on the canvas
+  // Draw the prey as an image
   // with a radius the same size as its current health.
-  display() {
-    push();
-    noStroke();
-    fill(this.fillColor);
+  display(preyImage) {
     this.radius = this.health;
-    ellipse(this.x, this.y, this.radius * 2);
-    pop();
+    if (this.radius > 0) {
+      image(preyImage, this.x, this.y, this.radius * 2, this.radius * 2);
+    }
   }
 
   // reset
