@@ -15,7 +15,7 @@
 let tiger;
 
 // The three prey
-let antelop;
+let antelope; // Fixed: (typo) it was written «antelop» instead of «antelope»
 let zebra;
 let bee;
 
