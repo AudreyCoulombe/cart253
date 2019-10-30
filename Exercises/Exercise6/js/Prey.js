@@ -7,8 +7,8 @@
 /////////////////////////
 // ~10 ERRORS IN HERE
 /////////////////////////
-
-glass Prey {
+//Fixed: "class" had a typo (it was written "glass")
+class Prey {
 
   // constructor
   //
