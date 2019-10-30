@@ -50,7 +50,7 @@ class Prey {
     this.tx += 0.01;
     this.ty += 0.01;
     // Handle wrapping
-    this.handleWarping();
+    this.handleWrapping(); // Fixed: (typo) it was written «handleWarping» instead of «handleWrapping»
   } // Fixed: the closing curly bracket was missing
 
   // handleWrapping
