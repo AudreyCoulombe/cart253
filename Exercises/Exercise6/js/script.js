@@ -40,7 +40,7 @@ function draw() {
   background(0); // Fixed: (typo) background was missing a «d» at the end
 
   // Handle input for the tiger
-
+  tiger.handleInput(); // Fixed: we couldn't move the tiger with the arrows because the handleInput() function hadn't been called in draw()
   // Move all the "animals"
   tiger.move();
   antelope.move();
