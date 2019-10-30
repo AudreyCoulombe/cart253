@@ -54,6 +54,6 @@ function draw() {
   // Display all the "animals"
   tiger.display();
   antelope.display(); // Fixed: (typo) it was written antelop instead of antelope
-  zebra.disploy();
+  zebra.disploy(); // Fixed: (typo) it was written disploy instead of display
   b.display();
 }
