@@ -10,7 +10,7 @@ class Predator {
   //
   // Sets the initial values for the Predator's properties
   // Either sets default values or uses the arguments provided
-  constructor(x, y, speed, radius, upKey, downKey, leftKey, rightKey, sprintKey) {
+  constructor(x, y, speed, radius, upKey, downKey, leftKey, rightKey, sprintKey,predatorImage) {
     // Position
     this.x = x;
     this.y = y;
@@ -25,6 +25,7 @@ class Predator {
     this.healthGainPerEat = 1;
     // Display properties
     this.radius = this.health; // Radius is defined in terms of health
+    this.predatorImage = predatorImage;
     // Input properties are used as arguments
     this.upKey = upKey;
     this.downKey = downKey;
@@ -127,11 +128,11 @@ class Predator {
   //
   // Draw the predators as images with a size corresponding to its current health.
   //displays the number of prey eaten
-  display(predatorImage, predatorName, textX, textY) {
+  display(predatorName, textX, textY) {
     this.radius = this.health;
     // If the predator is not dead, draw it as an image
     if (this.radius > 0) {
-      image(predatorImage, this.x, this.y, this.radius * 2, this.radius * 2);
+      image(this.predatorImage, this.x, this.y, this.radius * 2, this.radius * 2);
     }
     push();
     // Set up the font & display text from the center
