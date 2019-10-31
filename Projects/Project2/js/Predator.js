@@ -10,7 +10,7 @@ class Predator {
   //
   // Sets the initial values for the Predator's properties
   // Either sets default values or uses the arguments provided
-  constructor(x, y, speed, fillColor, radius) {
+  constructor(x, y, speed, fillColor, radius, predatorImage) {
     // Position
     this.x = x;
     this.y = y;
@@ -26,6 +26,7 @@ class Predator {
     // Display properties
     this.fillColor = fillColor;
     this.radius = this.health; // Radius is defined in terms of health
+    this.predatorImage = predatorImage;
     // Input properties
     this.upKey = UP_ARROW;
     this.downKey = DOWN_ARROW;
@@ -122,11 +123,11 @@ class Predator {
   //
   // Draw the predator as a shark
   // with a radius the same size as its current health.
-  display(predatorImage) {
+  display() {
     this.radius = this.health;
     // If the predator is not dead, draw it as an image
     if (this.radius > 0) {
-      image(predatorImage, this.x, this.y, this.radius * 2, this.radius * 2);
+      image(this.predatorImage, this.x, this.y, this.radius * 2, this.radius * 2);
     }
     this.displayHealthBar();
   }

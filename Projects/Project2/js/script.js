@@ -18,7 +18,7 @@ let yellowFishImage;
 let greyFishImage;
 let seahorseImage;
 let backgroundWaterImage;
-let foregroundNenupharImage;
+let foregroundSeaWeedImage;
 
 // Sound
 let jawsThemeSFX;
@@ -33,7 +33,7 @@ function preload() {
   greyFishImage = loadImage("assets/images/greyFish.png");
   seahorseImage = loadImage("assets/images/seahorse.png");
   backgroundWaterImage = loadImage("assets/images/background.jpg");
-  foregroundNenupharImage = loadImage("assets/images/foreground.png");
+  foregroundSeaWeedImage = loadImage("assets/images/foreground.png");
   // sounds
   jawsThemeSFX = loadSound("assets/sounds/JawsTheme.mp3");
 }
@@ -45,10 +45,10 @@ function preload() {
 // plays the sound in loop
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  shark = new Predator(100, 100, 5, color(200, 200, 0), 40);
-  yellowFish = new Prey(100, 100, 10, color(255, 100, 10), 50);
-  greyFish = new Prey(100, 100, 8, color(255, 255, 255), 60);
-  seahorse = new Prey(100, 100, 20, color(255, 255, 0), 10);
+  shark = new Predator(100, 100, 5, color(200, 200, 0), 40, sharkImage);
+  yellowFish = new Prey(100, 100, 10, color(255, 100, 10), 50, yellowFishImage);
+  greyFish = new Prey(100, 100, 8, color(255, 255, 255), 60, greyFishImage);
+  seahorse = new Prey(100, 100, 20, color(255, 255, 0), 10, seahorseImage);
   // play the sound in loop
   jawsThemeSFX.loop();
 }
@@ -75,11 +75,11 @@ function draw() {
   shark.handleEating(seahorse);
 
   // Display all the sea "animals"
-  shark.display(sharkImage);
-  yellowFish.display(yellowFishImage);
-  greyFish.display(greyFishImage);
-  seahorse.display(seahorseImage);
+  shark.display();
+  yellowFish.display();
+  greyFish.display();
+  seahorse.display();
 
   // Show the foreground as an image of nenuphars
-  image(foregroundNenupharImage, 0, 0, width, height);
+  image(foregroundSeaWeedImage, 0, 0, width, height);
 }
