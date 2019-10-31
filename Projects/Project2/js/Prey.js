@@ -76,6 +76,7 @@ class Prey {
     this.radius = this.health;
     if (this.radius > 0) {
       image(preyImage, this.x, this.y, this.radius * 2, this.radius * 2);
+    this.displayHealthBar();
     }
   }
 

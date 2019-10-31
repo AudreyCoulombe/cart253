@@ -80,12 +80,6 @@ function draw() {
   greyFish.display(greyFishImage);
   seahorse.display(seahorseImage);
 
-  // Display all the sea animals' health bar
-  shark.displayHealthBar();
-  yellowFish.displayHealthBar();
-  greyFish.displayHealthBar();
-  seahorse.displayHealthBar();
-
   // Show the foreground as an image of nenuphars
   image(foregroundNenupharImage, 0, 0, width, height);
 }

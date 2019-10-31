@@ -128,6 +128,7 @@ class Predator {
     if (this.radius > 0) {
       image(predatorImage, this.x, this.y, this.radius * 2, this.radius * 2);
     }
+    this.displayHealthBar();
   }
   // displayHealthBar
   //
