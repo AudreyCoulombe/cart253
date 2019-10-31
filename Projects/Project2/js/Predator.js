@@ -118,7 +118,6 @@ class Predator {
       }
     }
   }
-
   // display
   //
   // Draw the predator as a shark
@@ -129,5 +128,19 @@ class Predator {
     if (this.radius > 0) {
       image(predatorImage, this.x, this.y, this.radius * 2, this.radius * 2);
     }
+  }
+  // displayHealthBar
+  //
+  //diplay the predator's health on a visual bar
+  displayHealthBar() {
+    let healthValue;
+    //map the predator's health with the width of the bar
+    healthValue = map(this.health, 0,this.maxHealth,0,50);
+    //setup the bar visuals
+    fill(255,0,0);
+    rect(this.x-25+this.radius,this.y-15,50,10);
+    //display health loss on a red bar
+    fill(0,255,0);
+    rect(this.x-25+this.radius,this.y-15,healthValue,10);
   }
 }

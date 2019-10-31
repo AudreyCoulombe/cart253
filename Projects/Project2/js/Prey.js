@@ -92,4 +92,18 @@ class Prey {
     // Default radius
     this.radius = this.health;
   }
+  // displayHealthBar
+  //
+  //diplay the preys's health on a visual bar
+  displayHealthBar() {
+     let healthValue;
+     //map the preys's health with the width of the bar
+     healthValue = map(this.health, 0,this.maxHealth,0,50);
+     //setup the bar visuals
+     fill(255,0,0);
+     rect(this.x-25+this.radius,this.y-15,50,10);
+     //display health loss on a red bar
+     fill(0,255,0);
+     rect(this.x-25+this.radius,this.y-15,healthValue,10);
+   }
 }
