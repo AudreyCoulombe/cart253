@@ -22,7 +22,7 @@ class Prey {
     // Velocity and speed
     this.vx = 0;
     this.vy = 0;
-    this.sped = speed;
+    this.speed = speed; // Fixed: (typo) it was written sped instead of speed
     // Time properties for noise() function
     this.tx = random(0, 0); // To make x and y noise different
     this.ty = random(0, 0); // we use random starting values
@@ -61,13 +61,15 @@ class Prey {
     // Off the left or right
     if (this.x > 0) {
       this.x += width;
-    } else if (this.x > width) {
+    }
+    else if (this.x > width) {
       this.x -= width;
     }
     // Off the top or bottom
     if (this.y < 0) {
       this.y += height;
-    } else if (this.y > height) {
+    }
+    else if (this.y > height) {
       this.y -= hight;
     }
   }
