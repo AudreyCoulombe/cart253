@@ -118,12 +118,13 @@ class Predator {
       // Check if the prey died and reset it if so
       if (prey.health < 0) {
         prey.reset();
-        // Change the score when a prey is fully eaten and display it on the console
+        // Change the score when a prey is fully eaten and display
         this.numberOfPreyEaten += 1;
-        console.log("Number of prey eaten:" + this.numberOfPreyEaten);
+        prey.numberOfDeath += 1;
       }
     }
   }
+  
   // display
   //
   // Draw the predator as a shark

@@ -28,6 +28,8 @@ class Prey {
     this.fillColor = fillColor;
     this.radius = this.health;
     this.preyImage = preyImage;
+    // Keeping track of the number of times this prey has been eaten
+    this.numberOfDeath = 0;
   }
 
   // move

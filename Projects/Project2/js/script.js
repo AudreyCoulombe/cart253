@@ -141,11 +141,11 @@ function mousePressed() {
 }
 
 // showGameOver()
-// Display text about the game being over and the number of prey eaten
+// Display text about the game being over, the total number of prey eaten and the number of times you ate each prey
 function showGameOver() {
   push();
-  // Set up the font & display text in the centre of the screen
-  textSize(20);
+  // Set up the font & display text about the game being over and the total number of prey eaten
+  textSize(50);
   textAlign(CENTER, CENTER);
   fill(255);
   noStroke();
@@ -153,6 +153,20 @@ function showGameOver() {
   gameOverText = gameOverText + "You ate " + shark.numberOfPreyEaten + " preys\n";
   gameOverText = gameOverText + "before dying";
   // Display the text
-  text(gameOverText, width / 2, height / 2);
+  text(gameOverText, width / 2, height / 3);
+  pop();
+
+  // Set up the font and display the number of times you ate each prey next to the image of the prey
+  push();
+  imageMode(CENTER);
+  image(yellowFishImage, width/14*3, height/3*2, width/7, width/7);
+  image(greyFishImage, width/2, height/3*2, width/7, width/7);
+  image(seahorseImage, width/14*11, height/3*2, width/7, width/7);
+  textSize(30);
+  textStyle(BOLD);
+  fill(255);
+  text("= " + yellowFish.numberOfDeath, width/14*4, height/3*2);
+  text("= " + greyFish.numberOfDeath, width/14*8, height/3*2);
+  text("= " + seahorse.numberOfDeath, width/14*12, height/3*2);
   pop();
 }
