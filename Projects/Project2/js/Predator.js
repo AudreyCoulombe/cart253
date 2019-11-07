@@ -32,6 +32,8 @@ class Predator {
     this.downKey = DOWN_ARROW;
     this.leftKey = LEFT_ARROW;
     this.rightKey = RIGHT_ARROW;
+    //keeping track of the score
+    this.numberOfPreyEaten = 0;
   }
 
   // handleInput
@@ -116,6 +118,9 @@ class Predator {
       // Check if the prey died and reset it if so
       if (prey.health < 0) {
         prey.reset();
+        // Change the score when a prey is fully eaten and display it on the console
+        this.numberOfPreyEaten += 1;
+        console.log("Number of prey eaten:" + this.numberOfPreyEaten);
       }
     }
   }
@@ -144,5 +149,14 @@ class Predator {
     //display health loss on a red bar
     fill(0,255,0);
     rect(this.x-25+this.radius,this.y-15,healthValue,10);
+  }
+
+  // Check if the predator is dead
+  checkGameOver() {
+    // Check if the predator is dead (0 health)
+    if (this.health === 0) {
+      // If so, the game is over
+      gameOver = true;
+    }
   }
 }
