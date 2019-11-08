@@ -6,8 +6,7 @@
 
 class Predator {
 
-  // constructor
-  //
+  // constructor()
   // Sets the initial values for the Predator's properties
   // Either sets default values or uses the arguments provided
   constructor(x, y, speed, fillColor, radius, predatorImage) {
@@ -36,35 +35,29 @@ class Predator {
     this.numberOfPreyEaten = 0;
   }
 
-  // handleInput
-  //
+  // handleInput()
   // Checks if an arrow key is pressed and sets the predator's
   // velocity appropriately.
   handleInput() {
     // Horizontal movement
     if (keyIsDown(this.leftKey)) {
       this.vx = -this.speed;
-    }
-    else if (keyIsDown(this.rightKey)) {
+    } else if (keyIsDown(this.rightKey)) {
       this.vx = this.speed;
-    }
-    else {
+    } else {
       this.vx = 0;
     }
     // Vertical movement
     if (keyIsDown(this.upKey)) {
       this.vy = -this.speed;
-    }
-    else if (keyIsDown(this.downKey)) {
+    } else if (keyIsDown(this.downKey)) {
       this.vy = this.speed;
-    }
-    else {
+    } else {
       this.vy = 0;
     }
   }
 
-  // move
-  //
+  // move()
   // Updates the position according to velocity
   // Lowers health (as a cost of living)
   // Handles wrapping
@@ -79,32 +72,28 @@ class Predator {
     this.handleWrapping();
   }
 
-  // handleWrapping
-  //
+  // handleWrapping()
   // Checks if the predator has gone off the canvas and
   // wraps it to the other side if so
   handleWrapping() {
     // Off the left or right
     if (this.x < 0) {
       this.x += width;
-    }
-    else if (this.x > width) {
+    } else if (this.x > width) {
       this.x -= width;
     }
     // Off the top or bottom
     if (this.y < 0) {
       this.y += height;
-    }
-    else if (this.y > height) {
+    } else if (this.y > height) {
       this.y -= height;
     }
   }
 
-  // handleEating
-  //
-  // Takes a Prey object as an argument and checks if the predator
-  // overlaps it. If so, reduces the prey's health and increases
-  // the predator's. If the prey dies, it gets reset.
+  // handleEating()
+  // Takes a Prey object as an argument and checks if the predatoroverlaps it.
+  //If so, reduces the prey's health and increases the predator's.
+  //If the prey dies, it gets reset.
   handleEating(prey) {
     // Calculate distance from this predator to the prey
     let d = dist(this.x, this.y, prey.x, prey.y);
@@ -124,35 +113,38 @@ class Predator {
       }
     }
   }
-  
-  // display
-  //
-  // Draw the predator as a shark
+
+  // display()
+  // Draw the predator as an image
   // with a radius the same size as its current health.
   display() {
     this.radius = this.health;
     // If the predator is not dead, draw it as an image
     if (this.radius > 0) {
+      push();
+      imageMode(CENTER);
       image(this.predatorImage, this.x, this.y, this.radius * 2, this.radius * 2);
+      pop();
+      this.displayHealthBar();
     }
-    this.displayHealthBar();
   }
-  // displayHealthBar
-  //
+
+  // displayHealthBar()
   //diplay the predator's health on a visual bar
   displayHealthBar() {
     let healthValue;
     //map the predator's health with the width of the bar
-    healthValue = map(this.health, 0,this.maxHealth,0,50);
+    healthValue = map(this.health, 0, this.maxHealth, 0, 50);
     //setup the bar visuals
-    fill(255,0,0);
-    rect(this.x-25+this.radius,this.y-15,50,10);
+    fill(255, 0, 0);
+    rect(this.x - 25, this.y - this.radius - 15, 50, 10);
     //display health loss on a red bar
-    fill(0,255,0);
-    rect(this.x-25+this.radius,this.y-15,healthValue,10);
+    fill(0, 255, 0);
+    rect(this.x - 25, this.y - this.radius - 15, healthValue, 10);
   }
 
-  // Check if the predator is dead
+  // checkGameOver()
+  // Checks if the predator is dead
   checkGameOver() {
     // Check if the predator is dead (0 health)
     if (this.health === 0) {

@@ -6,8 +6,7 @@
 
 class Prey {
 
-  // constructor
-  //
+  // constructor()
   // Sets the initial values for the Predator's properties
   // Either sets default values or uses the arguments provided
   constructor(x, y, speed, fillColor, radius, preyImage) {
@@ -32,8 +31,7 @@ class Prey {
     this.numberOfDeath = 0;
   }
 
-  // move
-  //
+  // move()
   // Sets velocity based on the noise() function and the Prey's speed
   // Moves based on the resulting velocity and handles wrapping
   move() {
@@ -50,41 +48,39 @@ class Prey {
     this.handleWrapping();
   }
 
-  // handleWrapping
-  //
+  // handleWrapping()
   // Checks if the prey has gone off the canvas and
   // wraps it to the other side if so
   handleWrapping() {
     // Off the left or right
     if (this.x < 0) {
       this.x += width;
-    }
-    else if (this.x > width) {
+    } else if (this.x > width) {
       this.x -= width;
     }
     // Off the top or bottom
     if (this.y < 0) {
       this.y += height;
-    }
-    else if (this.y > height) {
+    } else if (this.y > height) {
       this.y -= height;
     }
   }
 
-  // display
-  //
+  // display()
   // Draw the prey as an image
   // with a radius the same size as its current health.
   display() {
     this.radius = this.health;
     if (this.radius > 0) {
+      push();
+      imageMode(CENTER);
       image(this.preyImage, this.x, this.y, this.radius * 2, this.radius * 2);
-    this.displayHealthBar();
+      pop();
+      this.displayHealthBar();
     }
   }
 
-  // reset
-  //
+  // reset()
   // Set the position to a random location and reset health
   // and radius back to default
   reset() {
@@ -96,18 +92,18 @@ class Prey {
     // Default radius
     this.radius = this.health;
   }
-  // displayHealthBar
-  //
+
+  // displayHealthBar()
   //diplay the preys's health on a visual bar
   displayHealthBar() {
-     let healthValue;
-     //map the preys's health with the width of the bar
-     healthValue = map(this.health, 0,this.maxHealth,0,50);
-     //setup the bar visuals
-     fill(255,0,0);
-     rect(this.x-25+this.radius,this.y-15,50,10);
-     //display health loss on a red bar
-     fill(0,255,0);
-     rect(this.x-25+this.radius,this.y-15,healthValue,10);
-   }
+    let healthValue;
+    //map the preys's health with the width of the bar
+    healthValue = map(this.health, 0, this.maxHealth, 0, 50);
+    //setup the bar visuals
+    fill(255, 0, 0);
+    rect(this.x - 25, this.y - this.radius - 15, 50, 10);
+    //display health loss on a red bar
+    fill(0, 255, 0);
+    rect(this.x - 25, this.y - this.radius - 15, healthValue, 10);
+  }
 }

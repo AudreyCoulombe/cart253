@@ -14,18 +14,24 @@ let gameOver = false;
 // Our predator
 let shark;
 
-// The three preyS
+// The three preys
 let yellowFish;
 let greyFish;
 let seahorse;
 
-// Images for predators, preys, background, foreground and start page
+// The two divers
+let diverGoingRight;
+let diverGoingLeft;
+
+// Images for predators, preys, background, foreground, start page and divers
 let yellowFishImage;
 let greyFishImage;
 let seahorseImage;
 let backgroundWaterImage;
 let foregroundSeaWeedImage;
 let startPageImage;
+let diverGoingRightImage;
+let diverGoingLeftImage;
 
 // Sound
 let jawsThemeSFX;
@@ -33,7 +39,7 @@ let jawsThemeSFX;
 // preload()
 // Preload images and sounds
 function preload() {
-  // images
+  // Load images
   sharkImage = loadImage("assets/images/shark.png");
   yellowFishImage = loadImage("assets/images/yellowFish.png");
   greyFishImage = loadImage("assets/images/greyFish.png");
@@ -41,20 +47,25 @@ function preload() {
   backgroundWaterImage = loadImage("assets/images/background.jpg");
   foregroundSeaWeedImage = loadImage("assets/images/foreground.png");
   startPageImage = loadImage("assets/images/startPage.png");
-  // sounds
+  diverGoingRightImage = loadImage("assets/images/diverGoingRight.png");
+  diverGoingLeftImage = loadImage("assets/images/diverGoingLeft.png");
+  // Load sounds
   jawsThemeSFX = loadSound("assets/sounds/JawsTheme.mp3");
 }
 
 // setup()
 // Sets up a canvas
-// Creates objects for the predator and three prey
+// Creates objects for the predator, preys and divers
 // plays the sound in loop
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  shark = new Predator(100, 100, 5, color(200, 200, 0), 40, sharkImage);
-  yellowFish = new Prey(100, 100, 10, color(255, 100, 10), 50, yellowFishImage);
-  greyFish = new Prey(100, 100, 8, color(255, 255, 255), 60, greyFishImage);
-  seahorse = new Prey(100, 100, 20, color(255, 255, 0), 10, seahorseImage);
+  shark = new Predator(width / 3, height / 5 * 2, 5, color(200, 200, 0), 40, sharkImage);
+  yellowFish = new Prey(random(0, width), random(0, height), 10, color(255, 100, 10), 50, yellowFishImage);
+  greyFish = new Prey(random(0, width), random(0, height), 8, color(255, 255, 255), 60, greyFishImage);
+  seahorse = new Prey(random(0, width), random(0, height), 20, color(255, 255, 0), 10, seahorseImage);
+  diverGoingRight = new Diver(height / 5, 277, 69, 8, diverGoingRightImage);
+  diverGoingLeft = new Diver(height / 5 * 3, 295, 70, -13, diverGoingLeftImage);
+
   // play the sound in loop
   jawsThemeSFX.loop();
 }
@@ -79,25 +90,33 @@ function draw() {
       // Handle input for the shark
       shark.handleInput();
 
-      // Move all the "sea animals"
+      // Move all the "sea animals" and divers
       shark.move();
       yellowFish.move();
       greyFish.move();
       seahorse.move();
+      diverGoingLeft.move();
+      diverGoingRight.move();
 
       // Check if the predator is dead
       shark.checkGameOver();
+
+      // Checks if the divers and predator touch
+      diverGoingRight.checkPredatorCollision(shark);
+      diverGoingLeft.checkPredatorCollision(shark);
 
       // Handle the shark eating any of the prey
       shark.handleEating(yellowFish);
       shark.handleEating(greyFish);
       shark.handleEating(seahorse);
 
-      // Display all the sea "animals"
+      // Display all the sea "animals" and divers
       shark.display();
       yellowFish.display();
       greyFish.display();
       seahorse.display();
+      diverGoingLeft.display();
+      diverGoingRight.display();
 
       // Show the foreground as an image of nenuphars
       image(foregroundSeaWeedImage, 0, 0, width, height);
@@ -159,14 +178,14 @@ function showGameOver() {
   // Set up the font and display the number of times you ate each prey next to the image of the prey
   push();
   imageMode(CENTER);
-  image(yellowFishImage, width/14*3, height/3*2, width/7, width/7);
-  image(greyFishImage, width/2, height/3*2, width/7, width/7);
-  image(seahorseImage, width/14*11, height/3*2, width/7, width/7);
+  image(yellowFishImage, width / 14 * 3, height / 3 * 2, width / 7, width / 7);
+  image(greyFishImage, width / 2, height / 3 * 2, width / 7, width / 7);
+  image(seahorseImage, width / 14 * 11, height / 3 * 2, width / 7, width / 7);
   textSize(30);
   textStyle(BOLD);
   fill(255);
-  text("= " + yellowFish.numberOfDeath, width/14*4, height/3*2);
-  text("= " + greyFish.numberOfDeath, width/14*8, height/3*2);
-  text("= " + seahorse.numberOfDeath, width/14*12, height/3*2);
+  text("= " + yellowFish.numberOfDeath, width / 14 * 4, height / 3 * 2);
+  text("= " + greyFish.numberOfDeath, width / 14 * 8, height / 3 * 2);
+  text("= " + seahorse.numberOfDeath, width / 14 * 12, height / 3 * 2);
   pop();
 }
