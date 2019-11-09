@@ -1,3 +1,4 @@
+"use strict";
 // Predator-Prey Simulation
 // by Audrey Coulombe
 //
@@ -20,10 +21,12 @@ let yellowFish;
 let greyFish;
 let seahorse;
 let elephantSeal;
+let preys = [];
 
 // The two divers
 let diverGoingRight;
 let diverGoingLeft;
+let divers = [];
 
 // Images for predators, preys, background, foreground, start page, divers and elephant seal
 let sharkImage;
@@ -64,12 +67,17 @@ function preload() {
 // plays the sound in loop
 function setup() {
   createCanvas(windowWidth, windowHeight);
+
   shark = new Predator(width / 3, height / 5 * 2, 5, 40, sharkImage);
   yellowFish = new Prey(random(0, width), random(0, height), 10, 50, yellowFishImage);
   greyFish = new Prey(random(0, width), random(0, height), 8, 60, greyFishImage);
   seahorse = new Prey(random(0, width), random(0, height), 20, 10, seahorseImage);
+  preys.push(yellowFish, greyFish, seahorse);
+
   diverGoingRight = new Obstacle(height / 5, 277, 69, 7, diverGoingRightImage);
   diverGoingLeft = new Obstacle(height / 5 * 3, 295, 70, -10, diverGoingLeftImage);
+  divers.push(diverGoingRight, diverGoingLeft);
+
   elephantSeal = new Boost(random(0, width), random(0, height), 200, 100, 15, elephantSealImage);
 }
 
@@ -96,39 +104,38 @@ function draw() {
       // Show the background as an image of water
       image(backgroundWaterImage, 0, 0, width, height);
 
-      // Handle input for the shark
+      // Handle input for the predator
       shark.handleInput();
-
-      // Move all the preys, predator, obstacles and boost
+      // Move the predator
       shark.move();
-      yellowFish.move();
-      greyFish.move();
-      seahorse.move();
-      diverGoingLeft.move();
-      diverGoingRight.move();
-      elephantSeal.move();
-
       // Check if the predator is dead
       shark.checkGameOver();
-
-      // Checks if the predator touch the obstacles or the boost
-      diverGoingRight.checkPredatorCollision(shark);
-      diverGoingLeft.checkPredatorCollision(shark);
-      elephantSeal.checkPredatorCollision(shark);
-
-      // Handle the shark eating any of the prey
+      // Handles when the predator eats any of the prey
       shark.handleEating(yellowFish);
       shark.handleEating(greyFish);
       shark.handleEating(seahorse);
-
-      // Display all the preys, predator, obstacles and boost
+      // Displays the predator
       shark.display();
-      yellowFish.display();
-      greyFish.display();
-      seahorse.display();
-      diverGoingLeft.display();
-      diverGoingRight.display();
+
+      // Move, display and check collisions with predator for the boost
+      elephantSeal.move();
       elephantSeal.display();
+      elephantSeal.checkPredatorCollision(shark);
+
+      // Moves and displays all the preys
+      for (let i = 0; i < preys.length; i++) {
+        // And for each one, move it and display it
+        preys[i].move();
+        preys[i].display();
+      }
+
+      // Moves, displays and checks for collision with the predator for all the preys
+      for (let i = 0; i < divers.length; i++) {
+        // And for each one, move it and display it
+        divers[i].move();
+        divers[i].display();
+        divers[i].checkPredatorCollision(shark);
+      }
 
       // Show the foreground as an image of sea weeds
       image(foregroundSeaWeedImage, 0, 0, width, height);
@@ -226,7 +233,9 @@ function resetGame() {
   shark.health = shark.maxHealth;
   // Reset the score of prey eaten
   shark.numberOfPreyEaten = 0;
-  yellowFish.numberOfDeath = 0;
-  greyFish.numberOfDeath = 0;
-  seahorse.numberOfDeath = 0;
+
+  for (let i = 0; i < preys.length; i++) {
+    // And for each one, move it and display it
+    preys[i].numberOfDeath = 0;
+  }
 }
