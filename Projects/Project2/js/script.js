@@ -11,19 +11,24 @@ let started = false;
 // Track whether the game is over
 let gameOver = false;
 
+// Boosting state (here, true when touching the elephant seal)
+let boosting = false;
+
 // Our predator
 let shark;
 
-// The three preys
+// The three preys and the elephant seal
 let yellowFish;
 let greyFish;
 let seahorse;
+let elephantSeal;
 
 // The two divers
 let diverGoingRight;
 let diverGoingLeft;
 
-// Images for predators, preys, background, foreground, start page and divers
+// Images for predators, preys, background, foreground, start page, divers and elephant seal
+let sharkImage;
 let yellowFishImage;
 let greyFishImage;
 let seahorseImage;
@@ -32,6 +37,7 @@ let foregroundSeaWeedImage;
 let startPageImage;
 let diverGoingRightImage;
 let diverGoingLeftImage;
+let elephantSealImage;
 
 // Sound
 let jawsThemeSFX;
@@ -49,23 +55,24 @@ function preload() {
   startPageImage = loadImage("assets/images/startPage.png");
   diverGoingRightImage = loadImage("assets/images/diverGoingRight.png");
   diverGoingLeftImage = loadImage("assets/images/diverGoingLeft.png");
+  elephantSealImage = loadImage("assets/images/elephantSeal.png");
   // Load sounds
   jawsThemeSFX = loadSound("assets/sounds/JawsTheme.mp3");
 }
 
 // setup()
 // Sets up a canvas
-// Creates objects for the predator, preys and divers
+// Creates objects for the predator, preys, obstacles and boost
 // plays the sound in loop
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  shark = new Predator(width / 3, height / 5 * 2, 5, color(200, 200, 0), 40, sharkImage);
-  yellowFish = new Prey(random(0, width), random(0, height), 10, color(255, 100, 10), 50, yellowFishImage);
-  greyFish = new Prey(random(0, width), random(0, height), 8, color(255, 255, 255), 60, greyFishImage);
-  seahorse = new Prey(random(0, width), random(0, height), 20, color(255, 255, 0), 10, seahorseImage);
-  diverGoingRight = new Diver(height / 5, 277, 69, 8, diverGoingRightImage);
-  diverGoingLeft = new Diver(height / 5 * 3, 295, 70, -13, diverGoingLeftImage);
-
+  shark = new Predator(width / 3, height / 5 * 2, 5, 40, sharkImage);
+  yellowFish = new Prey(random(0, width), random(0, height), 10, 50, yellowFishImage);
+  greyFish = new Prey(random(0, width), random(0, height), 8, 60, greyFishImage);
+  seahorse = new Prey(random(0, width), random(0, height), 20, 10, seahorseImage);
+  diverGoingRight = new Obstacle(height / 5, 277, 69, 7, diverGoingRightImage);
+  diverGoingLeft = new Obstacle(height / 5 * 3, 295, 70, -10, diverGoingLeftImage);
+  elephantSeal = new Boost(random(0, width), random(0, height), 200, 100, 15, elephantSealImage);
   // play the sound in loop
   jawsThemeSFX.loop();
 }
@@ -90,35 +97,38 @@ function draw() {
       // Handle input for the shark
       shark.handleInput();
 
-      // Move all the "sea animals" and divers
+      // Move all the preys, predator, obstacles and boost
       shark.move();
       yellowFish.move();
       greyFish.move();
       seahorse.move();
       diverGoingLeft.move();
       diverGoingRight.move();
+      elephantSeal.move();
 
       // Check if the predator is dead
       shark.checkGameOver();
 
-      // Checks if the divers and predator touch
+      // Checks if the predator touch the obstacles or the boost
       diverGoingRight.checkPredatorCollision(shark);
       diverGoingLeft.checkPredatorCollision(shark);
+      elephantSeal.checkPredatorCollision(shark);
 
       // Handle the shark eating any of the prey
       shark.handleEating(yellowFish);
       shark.handleEating(greyFish);
       shark.handleEating(seahorse);
 
-      // Display all the sea "animals" and divers
+      // Display all the preys, predator, obstacles and boost
       shark.display();
       yellowFish.display();
       greyFish.display();
       seahorse.display();
       diverGoingLeft.display();
       diverGoingRight.display();
+      elephantSeal.display();
 
-      // Show the foreground as an image of nenuphars
+      // Show the foreground as an image of sea weeds
       image(foregroundSeaWeedImage, 0, 0, width, height);
     }
     // If the game is over, display the game over page

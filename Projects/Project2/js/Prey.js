@@ -9,7 +9,7 @@ class Prey {
   // constructor()
   // Sets the initial values for the Predator's properties
   // Either sets default values or uses the arguments provided
-  constructor(x, y, speed, fillColor, radius, preyImage) {
+  constructor(x, y, speed, radius, preyImage) {
     // Position
     this.x = x;
     this.y = y;
@@ -24,7 +24,6 @@ class Prey {
     this.maxHealth = radius;
     this.health = this.maxHealth; // Must be AFTER defining this.maxHealth
     // Display properties
-    this.fillColor = fillColor;
     this.radius = this.health;
     this.preyImage = preyImage;
     // Keeping track of the number of times this prey has been eaten

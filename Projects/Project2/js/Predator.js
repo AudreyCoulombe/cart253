@@ -9,7 +9,7 @@ class Predator {
   // constructor()
   // Sets the initial values for the Predator's properties
   // Either sets default values or uses the arguments provided
-  constructor(x, y, speed, fillColor, radius, predatorImage) {
+  constructor(x, y, speed, radius, predatorImage) {
     // Position
     this.x = x;
     this.y = y;
@@ -23,7 +23,6 @@ class Predator {
     this.healthLossPerMove = 0.1;
     this.healthGainPerEat = 1;
     // Display properties
-    this.fillColor = fillColor;
     this.radius = this.health; // Radius is defined in terms of health
     this.predatorImage = predatorImage;
     // Input properties
@@ -33,6 +32,7 @@ class Predator {
     this.rightKey = RIGHT_ARROW;
     //keeping track of the score
     this.numberOfPreyEaten = 0;
+    this.numberOfGreyFishEaten = 0;
   }
 
   // handleInput()
