@@ -5,10 +5,8 @@
 // The predator chases the prey using the arrow keys and consumes them.
 // The predator looses health over time, so must keep eating to survive.
 
-// state of the game
-let started = false;
-
-// Track whether the game is over
+// Starting state of the game
+let state = "TITLE";
 let gameOver = false;
 
 // Boosting state (here, true when touching the elephant seal)
@@ -73,21 +71,25 @@ function setup() {
   diverGoingRight = new Obstacle(height / 5, 277, 69, 7, diverGoingRightImage);
   diverGoingLeft = new Obstacle(height / 5 * 3, 295, 70, -10, diverGoingLeftImage);
   elephantSeal = new Boost(random(0, width), random(0, height), 200, 100, 15, elephantSealImage);
+}
+
+// setupSound()
+function setupSound() {
   // play the sound in loop
   jawsThemeSFX.loop();
 }
 
 //draw()
-// Displays start page when the game has not started
-// While the game is active, displays background and foreground images, handles input, movement, eating, and displaying for preys and predator.
+// Displays start page when not playing
+// While the game is active, displays background and foreground images, handles input, movement, eating, and displaying for preys, predator, obstacles and boost
 // When the game is over, shows the game over screen.
 function draw() {
-  //if the game has not started, display the start page
-  if (!started) {
+  //if not playing, display the start page
+  if (state === "TITLE") {
     displayStartPage();
   }
-  // If the game has started...
-  else {
+  // If playing...
+  else if (state === "PLAY") {
     // Draw the background with the underwater image
     image(backgroundWaterImage, 0, 0, width, height);
     if (!gameOver) {
@@ -164,9 +166,17 @@ function displayStartPage() {
 }
 
 // mousePressed()
-// When mouse is pressed, start the game
+// When mouse is pressed, and the state is TITLE, change it it PLAY.
+// When it is pressed and the state is gameover, reset the game.
 function mousePressed() {
-  started = true;
+  // if we're at the title page, begin playing
+  if (state === "TITLE") {
+    state = "PLAY";
+  }
+  // if the state is gameover, resets the game.
+  if (gameOver === true) {
+    resetGame();
+  }
 }
 
 // showGameOver()
@@ -198,4 +208,25 @@ function showGameOver() {
   text("= " + greyFish.numberOfDeath, width / 14 * 8, height / 3 * 2);
   text("= " + seahorse.numberOfDeath, width / 14 * 12, height / 3 * 2);
   pop();
+}
+
+// resetGame()
+// Resets all the predator, preys, obstacles and boostTime
+function resetGame() {
+  gameOver = false;
+  state = "TITLE";
+  shark = new Predator(width / 3, height / 5 * 2, 5, 40, sharkImage);
+  yellowFish = new Prey(random(0, width), random(0, height), 10, 50, yellowFishImage);
+  greyFish = new Prey(random(0, width), random(0, height), 8, 60, greyFishImage);
+  seahorse = new Prey(random(0, width), random(0, height), 20, 10, seahorseImage);
+  diverGoingRight = new Obstacle(height / 5, 277, 69, 7, diverGoingRightImage);
+  diverGoingLeft = new Obstacle(height / 5 * 3, 295, 70, -10, diverGoingLeftImage);
+  elephantSeal = new Boost(random(0, width), random(0, height), 200, 100, 15, elephantSealImage);
+  // Reset the health of the predator to max health
+  shark.health = shark.maxHealth;
+  // Reset the score of prey eaten
+  shark.numberOfPreyEaten = 0;
+  yellowFish.numberOfDeath = 0;
+  greyFish.numberOfDeath = 0;
+  seahorse.numberOfDeath = 0;
 }

@@ -32,7 +32,6 @@ class Predator {
     this.rightKey = RIGHT_ARROW;
     //keeping track of the score
     this.numberOfPreyEaten = 0;
-    this.numberOfGreyFishEaten = 0;
   }
 
   // handleInput()
