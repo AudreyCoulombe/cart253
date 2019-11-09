@@ -91,8 +91,8 @@ class Predator {
 
   // handleEating()
   // Takes a Prey object as an argument and checks if the predatoroverlaps it.
-  //If so, reduces the prey's health and increases the predator's.
-  //If the prey dies, it gets reset.
+  // If so, reduces the prey's health and increases the predator's.
+  // If the prey dies, it gets reset.
   handleEating(prey) {
     // Calculate distance from this predator to the prey
     let d = dist(this.x, this.y, prey.x, prey.y);

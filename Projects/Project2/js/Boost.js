@@ -71,7 +71,7 @@ class Boost {
     pop();
   }
 
-  //checkPredatorCollision()
+  // checkPredatorCollision()
   // Verifies if the boost and the predator have touched
   // If so, the predator will have max health for 5 seconds (5000 milliseconds)
   checkPredatorCollision(predator) {
@@ -97,7 +97,8 @@ class Boost {
         // Make the predator health its max health
         predator.health = predator.maxHealth;
         // if the 5 seconds have passed
-      } else {
+      }
+      else {
         // Change the boosting state to false
         boosting = false;
       }

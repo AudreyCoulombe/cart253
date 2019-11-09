@@ -1,5 +1,5 @@
 // Obstacle
-// A class that represents a obstacle that moves horizontally a
+// A class that represents an obstacle that moves horizontally a
 // Makes the predator die when they touch
 
 class Obstacle {

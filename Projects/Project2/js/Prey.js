@@ -70,13 +70,13 @@ class Prey {
   // with a radius the same size as its current health.
   display() {
     this.radius = this.health;
-    if (this.radius > 0) {
-      push();
-      imageMode(CENTER);
-      image(this.preyImage, this.x, this.y, this.radius * 2, this.radius * 2);
-      pop();
-      this.displayHealthBar();
-    }
+if (this.radius > 0) {
+  push();
+  imageMode(CENTER);
+  image(this.preyImage, this.x, this.y, this.radius * 2, this.radius * 2);
+  pop();
+  this.displayHealthBar();
+}
   }
 
   // reset()

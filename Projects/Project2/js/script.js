@@ -2,9 +2,10 @@
 // Predator-Prey Simulation
 // by Audrey Coulombe
 //
-// Creates a predator and three preys (of different sizes and speeds)
+// Creates a predator, three preys, two obstacles and one boost
 // The predator chases the prey using the arrow keys and consumes them.
 // The predator looses health over time, so must keep eating to survive.
+// The prodator dies if he overlaps the obstacles and he gains max health for 5 seconds if he overlaps the boost
 
 // Starting state of the game
 let state = "TITLE";
@@ -21,22 +22,24 @@ let yellowFish;
 let greyFish;
 let seahorse;
 let elephantSeal;
+// The class for the three preys
 let preys = [];
 
 // The two divers
 let diverGoingRight;
 let diverGoingLeft;
+// The class for the two divers
 let divers = [];
 
-// Images for predators, preys, background, foreground, start page, divers and elephant seal
+// Images for start page, gameover page, background, foreground, predators, preys, divers and elephant seal
+let startPageImage;
+let gameoverImage;
+let backgroundWaterImage;
+let foregroundSeaWeedImage;
 let sharkImage;
 let yellowFishImage;
 let greyFishImage;
 let seahorseImage;
-let backgroundWaterImage;
-let foregroundSeaWeedImage;
-let startPageImage;
-let gameoverImage;
 let diverGoingRightImage;
 let diverGoingLeftImage;
 let elephantSealImage;
@@ -47,11 +50,11 @@ let jawsThemeSFX;
 // preload()
 // Preload images and sounds
 function preload() {
-  // Load images
-  backgroundWaterImage = loadImage("assets/images/background.jpg");
-  foregroundSeaWeedImage = loadImage("assets/images/foreground.png");
+  // Load images for start page, gameover page, background, foreground, predators, preys, divers and elephant seal
   startPageImage = loadImage("assets/images/startPage.png");
   gameoverImage = loadImage("assets/images/gameoverImage.png");
+  backgroundWaterImage = loadImage("assets/images/background.jpg");
+  foregroundSeaWeedImage = loadImage("assets/images/foreground.png");
   sharkImage = loadImage("assets/images/shark.png");
   yellowFishImage = loadImage("assets/images/yellowFish.png");
   greyFishImage = loadImage("assets/images/greyFish.png");
@@ -59,7 +62,7 @@ function preload() {
   diverGoingRightImage = loadImage("assets/images/diverGoingRight.png");
   diverGoingLeftImage = loadImage("assets/images/diverGoingLeft.png");
   elephantSealImage = loadImage("assets/images/elephantSeal.png");
-  // Load sounds
+  // Load sound
   jawsThemeSFX = loadSound("assets/sounds/JawsTheme.mp3");
 }
 
@@ -69,17 +72,20 @@ function preload() {
 // plays the sound in loop
 function setup() {
   createCanvas(windowWidth, windowHeight);
-
+  // Predator
   shark = new Predator(width / 3, height / 5 * 2, 5, 40, sharkImage);
+  // Preys
   yellowFish = new Prey(random(0, width), random(0, height), 10, 50, yellowFishImage);
   greyFish = new Prey(random(0, width), random(0, height), 8, 60, greyFishImage);
   seahorse = new Prey(random(0, width), random(0, height), 20, 10, seahorseImage);
+  // Add the preys in the array
   preys.push(yellowFish, greyFish, seahorse);
-
+  // Obstacles
   diverGoingRight = new Obstacle(height / 5, 277, 69, 7, diverGoingRightImage);
   diverGoingLeft = new Obstacle(height / 5 * 3, 295, 70, -10, diverGoingLeftImage);
+  // Add the obstacles in the array
   divers.push(diverGoingRight, diverGoingLeft);
-
+  // Boost
   elephantSeal = new Boost(random(0, width), random(0, height), 200, 100, 15, elephantSealImage);
 }
 
@@ -203,22 +209,27 @@ function showGameOver() {
 }
 
 // resetGame()
-// Resets all the predator, preys, obstacles and boostTime
+// Resets the state of the game
+// Resets all the predator, preys, obstacles and boost
 function resetGame() {
+  // Resets the state of the game
   gameOver = false;
   state = "TITLE";
+  // Resets the predator
   shark = new Predator(width / 3, height / 5 * 2, 5, 40, sharkImage);
+  // Resets the preys
   yellowFish = new Prey(random(0, width), random(0, height), 10, 50, yellowFishImage);
   greyFish = new Prey(random(0, width), random(0, height), 8, 60, greyFishImage);
   seahorse = new Prey(random(0, width), random(0, height), 20, 10, seahorseImage);
+  // Resets the obstacles
   diverGoingRight = new Obstacle(height / 5, 277, 69, 7, diverGoingRightImage);
   diverGoingLeft = new Obstacle(height / 5 * 3, 295, 70, -10, diverGoingLeftImage);
+  // Reset the boost
   elephantSeal = new Boost(random(0, width), random(0, height), 200, 100, 15, elephantSealImage);
   // Reset the health of the predator to max health
   shark.health = shark.maxHealth;
-  // Reset the score of prey eaten
+  // Reset the score
   shark.numberOfPreyEaten = 0;
-
   for (let i = 0; i < preys.length; i++) {
     // And for each one, move it and display it
     preys[i].numberOfDeath = 0;
