@@ -36,6 +36,7 @@ let seahorseImage;
 let backgroundWaterImage;
 let foregroundSeaWeedImage;
 let startPageImage;
+let gameoverImage;
 let diverGoingRightImage;
 let diverGoingLeftImage;
 let elephantSealImage;
@@ -47,13 +48,14 @@ let jawsThemeSFX;
 // Preload images and sounds
 function preload() {
   // Load images
+  backgroundWaterImage = loadImage("assets/images/background.jpg");
+  foregroundSeaWeedImage = loadImage("assets/images/foreground.png");
+  startPageImage = loadImage("assets/images/startPage.png");
+  gameoverImage = loadImage("assets/images/gameoverImage.png");
   sharkImage = loadImage("assets/images/shark.png");
   yellowFishImage = loadImage("assets/images/yellowFish.png");
   greyFishImage = loadImage("assets/images/greyFish.png");
   seahorseImage = loadImage("assets/images/seahorse.png");
-  backgroundWaterImage = loadImage("assets/images/background.jpg");
-  foregroundSeaWeedImage = loadImage("assets/images/foreground.png");
-  startPageImage = loadImage("assets/images/startPage.png");
   diverGoingRightImage = loadImage("assets/images/diverGoingRight.png");
   diverGoingLeftImage = loadImage("assets/images/diverGoingLeft.png");
   elephantSealImage = loadImage("assets/images/elephantSeal.png");
@@ -149,27 +151,9 @@ function draw() {
 
 // displayStartPage()
 // Display the start page image with back story and instructions
-// Display text in a rectangle to tell the player she/he has to click
 function displayStartPage() {
-  // Display background image
+  // Display image
   image(startPageImage, 0, 0, width, height);
-  // Display the rectangle in which the text will be placed
-  push();
-  fill(245, 197, 66);
-  rectMode(CENTER);
-  rect(width / 2, height / 5 * 3, 280, 50);
-  pop();
-
-  // Set up the font & display text over the rectangle
-  push();
-  textSize(30);
-  textStyle(BOLD);
-  textAlign(CENTER, CENTER);
-  fill(34, 32, 125);
-
-  // Display start text
-  text("CLICK TO START", width / 2, height / 5 * 3);
-  pop();
 }
 
 // mousePressed()
@@ -189,6 +173,7 @@ function mousePressed() {
 // showGameOver()
 // Display text about the game being over, the total number of prey eaten and the number of times you ate each prey
 function showGameOver() {
+  image(gameoverImage, 0, 0, width, height);
   push();
   // Set up the font & display text about the game being over and the total number of prey eaten
   textSize(50);
@@ -199,7 +184,7 @@ function showGameOver() {
   gameOverText = gameOverText + "You ate " + shark.numberOfPreyEaten + " preys\n";
   gameOverText = gameOverText + "before dying";
   // Display the text
-  text(gameOverText, width / 2, height / 3);
+  text(gameOverText, width / 3 * 2, height / 3);
   pop();
 
   // Set up the font and display the number of times you ate each prey next to the image of the prey
