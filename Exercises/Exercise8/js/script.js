@@ -11,18 +11,18 @@ RGB colors can be changed with the keys "Z", "X" and "C".
 Click one time to begin your creation and a second time to stop the animation and contemplate your artwork.
 ******************/
 
-// Class that displays the shapes in spiral
-let spiralMovement;
+// Class for the shape
+let circle;
 // Initial states of the game
 let animationStarted = false;
 let creationDone = false;
 
 // setup()
-// Creates an object for the spiral
+// Creates an object for the ellipse
 // Creates a canvas and translate its origin to the center
 // Fills the background with black
 function setup() {
-  spiralMovement = new SpiralMovement();
+  circle = new Ellipse();
   createCanvas(1000, 700, WEBGL);
   translate(width / 2, height / 2);
   background(0);
@@ -35,9 +35,11 @@ function draw() {
   // If the animation has not started yet...
   if (animationStarted) {
     // Display the spiral
-    spiralMovement.displaySpiral();
+    circle.displaySpiral();
     // And handle inputs
-    spiralMovement.changeColor();
+    circle.changeColor();
+    // Display shapes
+    circle.displayShape();
   }
 }
 
