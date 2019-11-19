@@ -11,20 +11,33 @@ RGB colors can be changed with the keys "Z", "X" and "C".
 Click one time to begin your creation and a second time to stop the animation and contemplate your artwork.
 ******************/
 
-// Class for the shape
+// Class for the shapes
 let circle;
+let spray;
+// Array to store the shapes
+let movingShapes = [];
 // Initial states of the game
 let animationStarted = false;
 let creationDone = false;
 
 // setup()
-// Creates an object for the ellipse
+// Creates objects for the shapes put it in the movingShapes array
 // Creates a canvas and translate its origin to the center
 // Fills the background with black
 function setup() {
+  // Create a circle object...
   circle = new Ellipse();
+  // And put it in the movingShapes array
+  movingShapes.push(circle);
+  // Create a spray object...
+  spray = new Spray();
+  // And put it in the movingShapes array
+  movingShapes.push(spray);
+  // Create the canvas...
   createCanvas(1000, 700, WEBGL);
+  // And put its origin to the center of the canvas
   translate(width / 2, height / 2);
+  // Draw a black background
   background(0);
 }
 
@@ -32,14 +45,19 @@ function setup() {
 // Once user have clicked, displays the shapes in spiral and handles inputs
 // Stops the loop when user clicks a second time
 function draw() {
-  // If the animation has not started yet...
+  // If the animation is strated...
   if (animationStarted) {
-    // Display the spiral
-    circle.displaySpiral();
-    // And handle inputs
-    circle.changeColor();
-    // Display shapes
-    circle.displayShape();
+    // display the spiral movement and change color for all my moving shapes
+    for (let i = 0; i < movingShapes.length; i++) {
+        movingShapes[i].displaySpiral();
+        movingShapes[i].changeColor();
+    }
+    if (keyIsDown(13)) {
+      spray.displayShape();
+    }
+    else {
+      circle.displayShape();
+    }
   }
 }
 
