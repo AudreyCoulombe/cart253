@@ -1,5 +1,5 @@
 // Ellipse
-// A class that ectends the spiralMovement
+// A class that extends the spiralMovement
 // Displays ellipses in a spiral movement
 class Ellipse extends SpiralMovement {
   constructor() {

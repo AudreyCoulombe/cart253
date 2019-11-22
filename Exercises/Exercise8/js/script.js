@@ -12,10 +12,12 @@ User can either display shapes in spiral, in drops or randomly.
 
 // Initial states of the game
 let state = "TITLE";
-// Classes & array for the shapes
+let dropsMoving = false;
+// Classes & array for the shapes/drops
 let circle;
 let spray;
 let movingShapes = [];
+let drops = [];
 // Image fot the options menu
 let menuImage;
 // Position of the spiral option in the menu
@@ -24,6 +26,11 @@ let spiralOption = {
   rightX: 188,
   topY: 170,
   bottomY: 322
+}
+// Position of the drops option in the menu
+let dropsOption = {
+  topY: 392,
+  bottomY: 545
 }
 
 // preload()
@@ -81,14 +88,33 @@ function draw() {
       circle.displayShape();
     }
   }
-  // Display the menu
+  // If the state is Drops...
+  else if (state === "DROPS") {
+    // And if the drops are not moving yet...
+    if (dropsMoving === false) {
+      // Create 3 drop objects, add them in the array and display them on screen
+      for (let i = 0; i < 3; i++) {
+        let drop = new Drop;
+        drops.push(drop);
+        drops[i].displayShape();
+      }
+      // Change state so drops move and are no longer displayed
+      dropsMoving = true;
+    }
+    // If the drops are displayed and ready to move...
+    else if (dropsMoving === true) {
+      // move all of them
+      for (let i=0; i < drops.length; i++) {
+        drops[i].moveDrop();
+      }
+    }
+  }
+  // Display the menu as an image over the user's drawing
   image(menuImage, 0, 0);
 }
 
 // mousePressed()
-// Clicking changes states of the game so the software does what the user wants
-// When we click a first time, twe pass from title state to drawing state
-// When we click on an option in the menu, the animation begins
+// Passes from start page to the menu, handles which option is clicked in the menu to start and pause animation
 function mousePressed() {
   // If we are on the start page...
   if (state === "TITLE") {
@@ -97,16 +123,24 @@ function mousePressed() {
   }
   // If you click on an option in the menu, the animation of this option starts
   else if (state === "DRAWING") {
-    // If the x position of the mouse is in the same range as the x position of the options...
+    // If you click in the same X range as the options in the menu (they all have same X postion)
     if (mouseX > spiralOption.leftX && mouseX < spiralOption.rightX) {
-      // And if the y position of the mouse is in the same range as the y position of the spiral option, change state to "spiral"
+      // And if you click in the same Y range as the spiral option, change state to "spiral" and run the animation
       if (mouseY > spiralOption.topY && mouseY < spiralOption.bottomY) {
+        loop(); // Start the loop
         state = "SPIRAL";
       }
-      // Stop the loop and change the state
-      //noLoop();
-      // loop();
+      // Or if you click in the same Y range as the drops option, change state to "drops" and run the animation
+      else if (mouseY > dropsOption.topY && mouseY < dropsOption.bottomY) {
+        state = "DROPS";
+        loop(); // Start the loop
+      }
     }
+  }
+  // If the state is either "spiral" or "drops", pause the animation and change state to "drawing"
+  else if (state === "SPIRAL" || state === "DROPS") {
+    noLoop(); // Stop the loop
+    state = "DRAWING";
   }
 }
 
