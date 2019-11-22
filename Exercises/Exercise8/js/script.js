@@ -5,25 +5,38 @@
 Project 3
 Audrey Coulombe
 
-A generative and interactive art software where shapes are displayed in spiral.
-User can change the width and height of the shape by moving the mouse on the screen.
-RGB colors can be changed with the keys "Z", "X" and "C".
-Click one time to begin your creation and a second time to stop the animation and contemplate your artwork.
+Art therapy
+A generative and interactive art software made to relax and just concentrate on a simple, beautiful thing.
+User can either display shapes in spiral, in drops or randomly.
 ******************/
 
-// Class for the shapes
+// Initial states of the game
+let state = "TITLE";
+// Classes & array for the shapes
 let circle;
 let spray;
-// Array to store the shapes
 let movingShapes = [];
-// Initial states of the game
-let animationStarted = false;
-let creationDone = false;
+// Image fot the options menu
+let menuImage;
+// Position of the spiral option in the menu
+let spiralOption = {
+  leftX: 9,
+  rightX: 188,
+  topY: 170,
+  bottomY: 322
+}
+
+// preload()
+// Preload images and sounds
+function preload() {
+  // Load image for the menu
+  menuImage = loadImage("assets/images/optionsMenu.png");
+  //music = loadSound("assets/sounds/music.mp3");
+}
 
 // setup()
 // Creates objects for the shapes put it in the movingShapes array
-// Creates a canvas and translate its origin to the center
-// Fills the background with black
+// Creates a canvas, fills the background with black and displays the menu as an image
 function setup() {
   // Create a circle object...
   circle = new Ellipse();
@@ -34,47 +47,71 @@ function setup() {
   // And put it in the movingShapes array
   movingShapes.push(spray);
   // Create the canvas...
-  createCanvas(1000, 700, WEBGL);
-  // And put its origin to the center of the canvas
-  translate(width / 2, height / 2);
+  createCanvas(1500, 800);
   // Draw a black background
   background(0);
+  // Display the menu image
+  image(menuImage, 0, 0);
 }
 
 // draw()
-// Once user have clicked, displays the shapes in spiral and handles inputs
-// Stops the loop when user clicks a second time
+// Shows the start page, the menu and animes the shapes.
 function draw() {
-  // If the animation is strated...
-  if (animationStarted) {
-    // display the spiral movement and change color for all my moving shapes
+  // If state is title, display the start page
+  if (state === "TITLE") {
+    displayTitlePage();
+  }
+  // If state is Drawing, show the menu
+  else if (state === "DRAWING") {
+    image(menuImage, 0, 0);
+  }
+  // If the state is Spiral...
+  else if (state === "SPIRAL") {
+    // Move the shapes in spiral and handle inputs to change color
     for (let i = 0; i < movingShapes.length; i++) {
-        movingShapes[i].displaySpiral();
-        movingShapes[i].changeColor();
+      movingShapes[i].displaySpiral();
+      movingShapes[i].changeColor();
     }
+    // If the key "enter" is down, display the shape as a spray
     if (keyIsDown(13)) {
       spray.displayShape();
     }
+    // If the key "enter" is not down, display the shape as a regular ellipse
     else {
       circle.displayShape();
     }
   }
+  // Display the menu
+  image(menuImage, 0, 0);
 }
 
 // mousePressed()
-// When we click a first time, animation starts
-// When we click a second time, animation stops
+// Clicking changes states of the game so the software does what the user wants
+// When we click a first time, twe pass from title state to drawing state
+// When we click on an option in the menu, the animation begins
 function mousePressed() {
-  // If the animation has not started and you click...
-  if (!animationStarted) {
-    // Change the state so that the animation starts
-    animationStarted = true;
-    loop();
+  // If we are on the start page...
+  if (state === "TITLE") {
+    // Change the state so that the drawing option menu is displayed
+    state = "DRAWING";
   }
-  // If the animation has started and you click...
-  else if (animationStarted) {
-    // Stop the loop and change the state
-    noLoop();
-    creationDone = true;
+  // If you click on an option in the menu, the animation of this option starts
+  else if (state === "DRAWING") {
+    // If the x position of the mouse is in the same range as the x position of the options...
+    if (mouseX > spiralOption.leftX && mouseX < spiralOption.rightX) {
+      // And if the y position of the mouse is in the same range as the y position of the spiral option, change state to "spiral"
+      if (mouseY > spiralOption.topY && mouseY < spiralOption.bottomY) {
+        state = "SPIRAL";
+      }
+      // Stop the loop and change the state
+      //noLoop();
+      // loop();
+    }
   }
+}
+
+// displayTitlePage()
+// Displays the start page as an image
+function displayTitlePage() {
+  console.log("Put start page here");
 }
