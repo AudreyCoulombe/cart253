@@ -18,7 +18,8 @@ let circle;
 let spray;
 let movingShapes = [];
 let drops = [];
-// Image fot the options menu
+// Images
+let startPageImage;
 let menuImage;
 // Position of the spiral option in the menu
 let spiralOption = {
@@ -38,6 +39,7 @@ let dropsOption = {
 function preload() {
   // Load image for the menu
   menuImage = loadImage("assets/images/optionsMenu.png");
+  startPageImage = loadImage("assets/images/startPage.png");
   //music = loadSound("assets/sounds/music.mp3");
 }
 
@@ -57,8 +59,6 @@ function setup() {
   createCanvas(1500, 800);
   // Draw a black background
   background(0);
-  // Display the menu image
-  image(menuImage, 0, 0);
 }
 
 // draw()
@@ -68,49 +68,52 @@ function draw() {
   if (state === "TITLE") {
     displayTitlePage();
   }
-  // If state is Drawing, show the menu
-  else if (state === "DRAWING") {
-    image(menuImage, 0, 0);
-  }
-  // If the state is Spiral...
-  else if (state === "SPIRAL") {
-    // Move the shapes in spiral and handle inputs to change color
-    for (let i = 0; i < movingShapes.length; i++) {
-      movingShapes[i].displaySpiral();
-      movingShapes[i].changeColor();
+  // Else do all these things and draw the menu image over it
+  else {
+    // If state is Drawing, show the menu
+    if (state === "DRAWING") {
+      image(menuImage, 0, 0, width, height);
     }
-    // If the key "enter" is down, display the shape as a spray
-    if (keyIsDown(13)) {
-      spray.displayShape();
-    }
-    // If the key "enter" is not down, display the shape as a regular ellipse
-    else {
-      circle.displayShape();
-    }
-  }
-  // If the state is Drops...
-  else if (state === "DROPS") {
-    // And if the drops are not moving yet...
-    if (dropsMoving === false) {
-      // Create 3 drop objects, add them in the array and display them on screen
-      for (let i = 0; i < 3; i++) {
-        let drop = new Drop;
-        drops.push(drop);
-        drops[i].displayShape();
+    // If the state is Spiral...
+    else if (state === "SPIRAL") {
+      // Move the shapes in spiral and handle inputs to change color
+      for (let i = 0; i < movingShapes.length; i++) {
+        movingShapes[i].displaySpiral();
+        movingShapes[i].changeColor();
       }
-      // Change state so drops move and are no longer displayed
-      dropsMoving = true;
-    }
-    // If the drops are displayed and ready to move...
-    else if (dropsMoving === true) {
-      // move all of them
-      for (let i=0; i < drops.length; i++) {
-        drops[i].moveDrop();
+      // If the key "enter" is down, display the shape as a spray
+      if (keyIsDown(13)) {
+        spray.displayShape();
+      }
+      // If the key "enter" is not down, display the shape as a regular ellipse
+      else {
+        circle.displayShape();
       }
     }
+    // If the state is Drops...
+    else if (state === "DROPS") {
+      // And if the drops are not moving yet...
+      if (dropsMoving === false) {
+        // Create 3 drop objects, add them in the array and display them on screen
+        for (let i = 0; i < 3; i++) {
+          let drop = new Drop;
+          drops.push(drop);
+          drops[i].displayShape();
+        }
+        // Change state so drops move and are no longer displayed
+        dropsMoving = true;
+      }
+      // If the drops are displayed and ready to move...
+      else if (dropsMoving === true) {
+        // move all of them
+        for (let i = 0; i < drops.length; i++) {
+          drops[i].moveDrop();
+        }
+      }
+    }
+    // Display the menu as an image over the user's drawing
+    image(menuImage, 0, 0, width, height);
   }
-  // Display the menu as an image over the user's drawing
-  image(menuImage, 0, 0);
 }
 
 // mousePressed()
@@ -118,6 +121,8 @@ function draw() {
 function mousePressed() {
   // If we are on the start page...
   if (state === "TITLE") {
+    // Draw a black background
+    background(0);
     // Change the state so that the drawing option menu is displayed
     state = "DRAWING";
   }
@@ -147,5 +152,5 @@ function mousePressed() {
 // displayTitlePage()
 // Displays the start page as an image
 function displayTitlePage() {
-  console.log("Put start page here");
+  image(startPageImage, 0, 0, width, height);
 }

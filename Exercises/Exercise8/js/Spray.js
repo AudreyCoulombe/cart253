@@ -1,5 +1,5 @@
 // Spray
-// A class that ectends the spiralMovement
+// A class that extends the spiralMovement
 // Displays a spray of pixels in a spiral movement
 class Spray extends SpiralMovement {
   constructor() {
