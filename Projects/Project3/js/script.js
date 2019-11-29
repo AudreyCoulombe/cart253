@@ -18,9 +18,11 @@ let circle;
 let spray;
 let movingShapes = [];
 let drops = [];
+let ellipticShapes;
 // Images
 let startPageImage;
 let menuImage;
+//let starImage;
 // Position of the spiral option in the menu
 let spiralOption = {
   leftX: 9,
@@ -34,12 +36,18 @@ let dropsOption = {
   bottomY: 545
 }
 
+let ellipticShapesOption = {
+  topY: 612,
+  bottomY: 766
+}
+
 // preload()
 // Preload images and sounds
 function preload() {
   // Load image for the menu
   menuImage = loadImage("assets/images/optionsMenu.png");
   startPageImage = loadImage("assets/images/startPage.png");
+  //starImage = loadImage("assets/images/star.png");
   //music = loadSound("assets/sounds/music.mp3");
 }
 
@@ -55,6 +63,7 @@ function setup() {
   spray = new Spray();
   // And put it in the movingShapes array
   movingShapes.push(spray);
+  ellipticShapes = new EllipticShapes();
   // Create the canvas...
   createCanvas(1500, 800);
   // Draw a black background
@@ -111,6 +120,9 @@ function draw() {
         }
       }
     }
+    else if (state === "ROTATION") {
+        ellipticShapes.displayShapes();
+    }
     // Display the menu as an image over the user's drawing
     image(menuImage, 0, 0, width, height);
   }
@@ -140,10 +152,14 @@ function mousePressed() {
         state = "DROPS";
         loop(); // Start the loop
       }
+      else if (mouseY > ellipticShapesOption.topY && mouseY < ellipticShapesOption.bottomY) {
+        loop();
+        state = "ROTATION";
+      }
     }
   }
   // If the state is either "spiral" or "drops", pause the animation and change state to "drawing"
-  else if (state === "SPIRAL" || state === "DROPS") {
+  else if (state === "SPIRAL" || state === "DROPS" || state === "ROTATION") {
     noLoop(); // Stop the loop
     state = "DRAWING";
   }
