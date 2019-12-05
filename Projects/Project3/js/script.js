@@ -30,18 +30,23 @@ let ellipticShapesInstructionsImage;
 let spiralOption = {
   leftX: 11,
   rightX: 177,
-  topY: 156,
-  bottomY: 313
+  topY: 108,
+  bottomY: 265
 }
 // Position of the drops option in the menu
 let dropsOption = {
-  topY: 366,
-  bottomY: 522
+  topY: 280,
+  bottomY: 437
 }
-
+// Position of the elliptic shapes option in the menu
 let ellipticShapesOption = {
-  topY: 569,
-  bottomY: 726
+  topY: 452,
+  bottomY: 608
+}
+// Position of the reset option in the menu
+let resetOption = {
+  topY: 622,
+  bottomY: 740
 }
 
 // preload()
@@ -160,9 +165,16 @@ function mousePressed() {
       else if (mouseY > dropsOption.topY && mouseY < dropsOption.bottomY) {
         loop(); // Start the loop
         state = "DROPS";
-      } else if (mouseY > ellipticShapesOption.topY && mouseY < ellipticShapesOption.bottomY) {
+      }
+      // Or if you click in the same Y range as the elliptic shapes option, change state to "elliptic shapes" and run the animation
+      else if (mouseY > ellipticShapesOption.topY && mouseY < ellipticShapesOption.bottomY) {
         loop();
         state = "ELLIPTICSHAPES";
+      }
+      // Or if you click in the same Y range as the reset option, reset the drawing and change state to "drawing"
+      else if (mouseY > resetOption.topY && mouseY < resetOption.bottomY) {
+        resetDrawing();
+        state = "DRAWING";
       }
     }
   }
@@ -177,4 +189,13 @@ function mousePressed() {
 // Displays the start page as an image
 function displayTitlePage() {
   image(startPageImage, 0, 0, width, height);
+}
+
+// resetDrawing()
+// Erases the drawing on screen
+function resetDrawing() {
+  // Draw a black background over the drawing to hide it
+  background(0);
+  // Display the menu image
+  image(menuImage, 0, 0, width, height);
 }
