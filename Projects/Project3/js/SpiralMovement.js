@@ -101,7 +101,7 @@ class SpiralMovement {
     this.angle += this.speed;
     this.spiralRadius += this.speed;
     // Sets x and y positons of the shape so that it is displayed in spiral
-    this.x = width/2 + cos(this.angle) * this.spiralRadius;
+    this.x = (width + 189)/2 + cos(this.angle) * this.spiralRadius;
     this.y = height/2 + sin(this.angle) * this.spiralRadius;
   }
 }

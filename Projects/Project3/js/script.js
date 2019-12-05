@@ -22,32 +22,37 @@ let ellipticShapes;
 // Images
 let startPageImage;
 let menuImage;
-//let starImage;
+let spiralInstructionsImage;
+let dropsInstructionsImage;
+let ellipticShapesInstructionsImage;
+
 // Position of the spiral option in the menu
 let spiralOption = {
-  leftX: 9,
-  rightX: 188,
-  topY: 170,
-  bottomY: 322
+  leftX: 11,
+  rightX: 177,
+  topY: 156,
+  bottomY: 313
 }
 // Position of the drops option in the menu
 let dropsOption = {
-  topY: 392,
-  bottomY: 545
+  topY: 366,
+  bottomY: 522
 }
 
 let ellipticShapesOption = {
-  topY: 612,
-  bottomY: 766
+  topY: 569,
+  bottomY: 726
 }
 
 // preload()
 // Preload images and sounds
 function preload() {
-  // Load image for the menu
+  // Load images for the menu and instuctions
   menuImage = loadImage("assets/images/optionsMenu.png");
   startPageImage = loadImage("assets/images/startPage.png");
-  //starImage = loadImage("assets/images/star.png");
+  spiralInstructionsImage = loadImage("assets/images/spiralInstructionsMenu.png");
+  dropsInstructionsImage = loadImage("assets/images/dropsInstructionsMenu.png");
+  ellipticShapesInstructionsImage = loadImage("assets/images/ellipticShapesInstructionsMenu.png");
   //music = loadSound("assets/sounds/music.mp3");
 }
 
@@ -65,7 +70,7 @@ function setup() {
   movingShapes.push(spray);
   ellipticShapes = new EllipticShapes();
   // Create the canvas...
-  createCanvas(1500, 800);
+  createCanvas(1400, 750);
   // Draw a black background
   background(0);
 }
@@ -73,6 +78,7 @@ function setup() {
 // draw()
 // Shows the start page, the menu and animes the shapes.
 function draw() {
+  //console.log("X: " + mouseX + ", Y: " + mouseY);
   // If state is title, display the start page
   if (state === "TITLE") {
     displayTitlePage();
@@ -90,14 +96,16 @@ function draw() {
         movingShapes[i].displaySpiral();
         movingShapes[i].changeColor();
       }
-      // If the key "enter" is down, display the shape as a spray
-      if (keyIsDown(13)) {
+      // If the space bar is down, display the shape as a spray
+      if (keyIsDown(32)) {
         spray.displayShape();
       }
-      // If the key "enter" is not down, display the shape as a regular ellipse
+      // If the space bar is not down, display the shape as a regular ellipse
       else {
         circle.displayShape();
       }
+      // Display the instructions over the drawing
+      image(spiralInstructionsImage, 0, 0, width, height);
     }
     // If the state is Drops...
     else if (state === "DROPS") {
@@ -114,17 +122,21 @@ function draw() {
       }
       // If the drops are displayed and ready to move...
       else if (dropsMoving === true) {
-        // move all of them
+        // Move all of them
         for (let i = 0; i < drops.length; i++) {
           drops[i].moveDrop();
         }
       }
+      // Display the instructions over the drawing
+      image(dropsInstructionsImage, 0, 0, width, height);
     }
-    else if (state === "ROTATION") {
+    // If the state is elliptic shapes...
+    else if (state === "ELLIPTICSHAPES") {
+        // Display the shapes
         ellipticShapes.displayShapes();
+        // Display the instructions over the drawing
+        image(ellipticShapesInstructionsImage, 0, 0, width, height);
     }
-    // Display the menu as an image over the user's drawing
-    image(menuImage, 0, 0, width, height);
   }
 }
 
@@ -149,17 +161,17 @@ function mousePressed() {
       }
       // Or if you click in the same Y range as the drops option, change state to "drops" and run the animation
       else if (mouseY > dropsOption.topY && mouseY < dropsOption.bottomY) {
-        state = "DROPS";
         loop(); // Start the loop
+        state = "DROPS";
       }
       else if (mouseY > ellipticShapesOption.topY && mouseY < ellipticShapesOption.bottomY) {
         loop();
-        state = "ROTATION";
+        state = "ELLIPTICSHAPES";
       }
     }
   }
   // If the state is either "spiral" or "drops", pause the animation and change state to "drawing"
-  else if (state === "SPIRAL" || state === "DROPS" || state === "ROTATION") {
+  else if (state === "SPIRAL" || state === "DROPS" || state === "ELLIPTICSHAPES") {
     noLoop(); // Stop the loop
     state = "DRAWING";
   }

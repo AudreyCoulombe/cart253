@@ -9,6 +9,8 @@ class Drop {
     // X and Y positions
     this.x = 1;
     this.y = 1;
+    // Where the artboard starts on X axe (end of the menu)
+    this.artboardStartX = 189;
     // Size
     this.dropSize = 100;
     // X and Y velocities
@@ -27,9 +29,9 @@ class Drop {
     // Set red, green and alpha to a random value
     this.redAndGreen = random(0,3);
     this.alpha = random(0,100);
-    // Set x and y position to random a random value
-    this.x = random(-200,width);
-    this.y = random(0, height/2);
+    // Set x and y position to a random value
+    this.x = random(this.artboardStartX,width);
+    this.y = random(-50, height/2);
     // Set the color, stroke and display properties for the ellipse
     fill(this.redAndGreen, this.redAndGreen, 8, this.alpha);
     noStroke();
@@ -50,11 +52,11 @@ class Drop {
     this.y += this.vy;
 
     // Set x velocity according to the mouse's x position and map it
-    this.vx = map(mouseX, 0, width, -5, 5);
+    this.vx = map(mouseX, this.artboardStartX, width, -5, 5);
     // Add the x velocity to the x position
     this.x += this.vx;
     // Keep the x position in the canvas
-    this.x = constrain(this.x,0,width);
+    this.x = constrain(this.x,this.artboardStartX,width);
     // Set the size of the drop according to the y position of the mouse and maps it
     this.dropSize = map(mouseY, 0, height, 20, 100);
     // Set opacity, red and green to a random value
